@@ -1,5 +1,5 @@
 import React from 'react'
-import Redirect from 'react-router/Redirect'
+import Redirect from 'react-router'
 
 export default class NotFound extends React.Component {
   constructor() {
@@ -10,9 +10,9 @@ export default class NotFound extends React.Component {
   }
 
   componentDidMount() {
-    setInterval(() => (
-      this.setState({ counter: this.state.counter - 1, })
-    ), 1000)
+    // setInterval(() => (
+    //   this.setState({ counter: this.state.counter - 1 })
+    // ), 1000)
   }
 
   render() {

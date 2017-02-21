@@ -1,0 +1,137 @@
+@import 'normalize';
+@import url('https://fonts.googleapis.com/css?family=Montserrat:200,300,400|Open+Sans:300,400');
+
+
+$black: #191414;
+$white: #FFFFFF;
+$green: #1DB954;
+
+
+$link-color: $green;
+$link-hover-color: $white;
+$link-active-click-color: #e91e63;
+$active-color: #4caf50;
+$error-msg-bg-color: #e91e63;
+$error-msg-text-color: #FAFAFA;
+$content-bg-color: $black;
+
+
+
+html {
+  background: $black;
+}
+
+body {
+  font-family: 'Montserrat', 'Helvetica Neue';
+  font-weight: 300;
+  color: $white;
+  margin-top: 0;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.content {
+  margin-top: 0;
+}
+
+.app {
+}
+
+.active {
+  color: $active-color;
+}
+
+a {
+  margin: 10px;
+  // font-weight: normal;
+  color: $link-color;
+
+  &:hover {
+    color: $link-hover-color;
+
+    &:active {
+      color: $link-active-click-color;
+    }
+  }
+}
+
+.hello-link {
+  display: inline-block;
+  margin: 15px 0;
+  color: $link-color;
+  text-decoration: none;
+
+  h1 {
+    font-weight: normal;
+    margin: 0 20px;
+  }
+
+  &:hover {
+    color: $link-hover-color;
+
+    &:active {
+      color: $link-active-click-color;
+    }
+  }
+}
+
+.header {
+  margin-top: 0;
+  margin-bottom: 20px;
+  height: 60px;
+  font-family: 'Montserrat', 'Helvetica Neue';
+  border-bottom: 1px solid $green;
+  // text-align: center;
+  background: $black;
+  z-index: 1;
+    a {
+      text-decoration: none;
+    }
+}
+
+.navbar {
+  display: inline-block;
+  margin-top: 20px;
+  margin-right: 20px;
+  float: right;
+  font-size: 1.5em;
+}
+
+.not-found {
+  width: 40%;
+  height: 50px;
+  margin: 20px auto;
+  padding: 20px;
+  border-radius: 10px;
+  background: $error-msg-bg-color;
+  color: $error-msg-text-color;
+  text-align: center;
+  filter: opacity(75%);
+}
+
+.content-box {
+  height: auto;
+  max-width: 900px;
+  margin: 20px auto;
+  padding: 20px;
+  border-radius: 10px;
+  background: $content-bg-color;
+}
+
+a {
+  &.btn-login {
+    font-size: 20px;
+    background-color: $green;
+    color: $white;
+    padding: 6px 60px;
+    border: 1px solid $black;
+    border-radius: 30px;
+
+    &:hover {
+      background: $black;
+      color: $green;
+      border: 1px solid $green;
+
+    }
+  }
+}
