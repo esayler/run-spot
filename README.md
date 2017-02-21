@@ -1,16 +1,16 @@
-# Run Spot v0.0.1
+# Run Spot
 
-## Overview
+## :boom: Overview
 
-A React.js app to sort your music playlists for running based on track BPM. 
+A React.js app to organize/sort your [Spotify](https://www.spotify.com/) :musical_note: playlists for running based on track BPM. 
 
-## Features
-
-
+## :sparkles: Features
 
 _Webpack 2.2 with React Hot Loader 3 (beta), React Router 4 (beta), Sass, Express 4 Server_
+_Testing using Karma with Mocha/Chai/Enzyme/Sinon_
 
-## TODO: 
+
+## :fire: TODO: 
 - [ ] Add Redux
 - [ ] Use backend session store
 - [ ] Cache
@@ -18,9 +18,7 @@ _Webpack 2.2 with React Hot Loader 3 (beta), React Router 4 (beta), Sass, Expres
 
 
 
-Testing using Karma with Mocha/Chai/Enzyme/Sinon
-
-## Installation (MacOS):
+## :wrench: Installation (MacOS):
 
 - install `yarn` if you don't already have it: [yarn installation instructions](https://yarnpkg.com/en/docs/getting-started)
 
@@ -28,15 +26,14 @@ Testing using Karma with Mocha/Chai/Enzyme/Sinon
 yarn
 ```
 
-## Usage:
+## :tada: Usage:
 
 ### to start the development server
 ```
 yarn serve
 ```
 
-- then navigate to [http://localhost:8080/](http://localhost:8080/)
-
+- then navigate to [http://localhost:8000/](http://localhost:8000/)
 - saved changes should rebuild and be hot swapped - no need to refresh browser
 
 ### to start the test runner
