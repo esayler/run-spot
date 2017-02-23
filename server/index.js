@@ -8,10 +8,10 @@ import morgan from 'morgan'
 import cors from 'cors'
 // const api = require('./api')
 
-import webpack from 'webpack';
-import WebpackDevServer from 'webpack-dev-server';
-import historyApiFallback from 'connect-history-api-fallback';
-import webpackConfig from '../webpack.config.js';
+import webpack from 'webpack'
+import WebpackDevServer from 'webpack-dev-server'
+import historyApiFallback from 'connect-history-api-fallback'
+import webpackConfig from '../webpack.config.js'
 const { resolve } = require('path')
 
 import util from 'util'
