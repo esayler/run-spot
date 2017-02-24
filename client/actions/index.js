@@ -11,3 +11,17 @@ export const appendTracks = (data) => {
     data,
   }
 }
+
+export const setActiveUser = (data) => {
+  return {
+    type: 'SET_ACTIVE_USER',
+    data,
+  }
+}
+
+export const setActivePlaylist = (data) => {
+  return {
+    type: 'SET_ACTIVE_PLAYLIST',
+    data,
+  }
+}

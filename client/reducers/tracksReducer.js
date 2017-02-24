@@ -1,7 +1,7 @@
 const tracks = (state = [], action) => {
   switch (action.type) {
     case 'APPEND_TRACKS':
-      return [action.data, ...state]
+      return action.data
     default:
       return state
   }

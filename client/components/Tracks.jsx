@@ -1,56 +1,24 @@
 import React from 'react'
 import axios from 'axios'
 import { Column, Table } from 'react-virtualized'
-import 'react-virtualized/styles.css'
+import TracksTable from './TracksTable'
 
-export default class GetTracks extends React.Component {
-  constructor() {
-    super()
-    this.state = {
-      tracks: '',
-    }
-  }
+export default class Tracks extends React.Component {
 
   componentWillMount() {
-    axios.get('http://localhost:8000/api/tracks/')
+    const ownerId = this.props.match.params.ownerId
+    const playlistId = this.props.match.params.playlistId
+
+    axios.get(`http://localhost:8000/api/tracks/${ownerId}/${playlistId}`)
       .then(res => {
+        console.log(res.data)
         const trackList = res.data ? res.data.items.map(({ track }) => Object.assign({}, { id: track.id, album: track.album.name, artist: track.artists[0].name, name: track.name })) : []
-        this.setState({tracks: trackList})
+        this.props.appendTracks(trackList)
       })
   }
 
   render() {
     // const renderTracks = this.state.tracks ? this.state.tracks.map(track => (<div key={track.id}> {track.name} - {track.artist} - {track.album} </div>)) : []
-
-    return (
-      <div className='content-box'>
-        <div>
-          <Table
-            width={900}
-            height={1000}
-            headerHeight={20}
-            rowHeight={30}
-            rowCount={this.state.tracks.length}
-            rowGetter={({ index }) => this.state.tracks[index]}
-            >
-              <Column
-                label='Name'
-                dataKey='name'
-                width={300}
-              />
-              <Column
-                width={300}
-                label='Artist'
-                dataKey='artist'
-              />
-              <Column
-                width={300}
-                label='Album'
-                dataKey='album'
-              />
-            </Table>
-        </div>
-      </div>
-    )
+    return (<TracksTable className='tracks-table' data={this.props.tracks ? this.props.tracks : []} />)
   }
 }

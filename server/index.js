@@ -74,17 +74,24 @@ app.use(morgan('dev'))
 
 // app.use('/api', api)
 
+app.get('/api/me', (req, res) => {
+  spotifyApi.getMe()
+    .then(function (data) {
+      res.send(data)
+    }, function (err) {
+      console.log('Something went wrong!', err)
+    })
+})
+
 app.get('/api', (req, res) => {
   res.send('Hello! Login by visiting /auth/spotify')
 })
 
-app.get('/api/tracks', (req, res) => spotifyApi.getMySavedTracks({
-  limit: 50,
-  offset: 0,
+app.get('/api/tracks/:userId/:playlistId', (req, res) => {
+  spotifyApi.getPlaylistTracks(`${req.params.userId}`, `${req.params.playlistId}`, { 'offset': 0, 'limit': 20, 'fields': 'items' })
+    .then(data => res.json(data.body),
+    err => console.log('Something went wrong!', util.inspect(err)))
 })
-  .then(data => res.send(data.body),
-    err => console.log('Something went wrong!', util.inspect(err))
-))
 
 app.get('/api/playlists', (req, res) => spotifyApi.getUserPlaylists(req.user.id)
   .then(data => res.json(data.body),
@@ -114,15 +121,13 @@ app.use('/api/auth/spotify',
 app.get('/api/callback',
   passport.authenticate('spotify', { failureRedirect: '/fail' }),
   (req, res) => {
-    // console.log(res)
-    res.redirect('http://localhost:8000/')
+    res.redirect(`http://localhost:8000?user=${req.user.id}`)
   }
 )
 
 app.get('/api/logout', (req, res) => {
   req.logout()
   res.send('you successfully logged out')
-  // res.redirect('/')
 })
 
 app.listen(3000, () => {
@@ -132,13 +137,13 @@ app.listen(3000, () => {
 const reactServer = new WebpackDevServer(webpack(webpackConfig), {
   contentBase: '/',
   proxy: {
-    '/api': `http://localhost:3000`
+    '/api': `http://localhost:3000`,
   },
   stats: {
     colors: true,
   },
   hot: true,
-  historyApiFallback: true
+  historyApiFallback: true,
 })
 
 reactServer.use('/', express.static(resolve(__dirname, '../public')))

@@ -3,12 +3,14 @@ const webpack = require('webpack')
 
 module.exports = {
   context: __dirname,
-  entry: [
-    'react-hot-loader/patch',
-    'webpack-dev-server/client?http://localhost:8000',
-    'webpack/hot/only-dev-server',
-    resolve(__dirname, 'client/index.jsx'),
-  ],
+  entry: {
+    app: [
+      'react-hot-loader/patch',
+      resolve(__dirname, 'client/index.jsx'),
+      'webpack-dev-server/client?http://localhost:8000',
+      'webpack/hot/only-dev-server',
+    ]
+  },
   devtool: 'eval-source-map',
   devServer: {
     hot: true,
