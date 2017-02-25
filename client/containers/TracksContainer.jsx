@@ -5,18 +5,17 @@ import Tracks from '../components/Tracks'
 const mapStateToProps = (state) => {
   return {
     activePlaylist: state.playlists.activePlaylist,
-    tracks: state.tracks,
+    tracks: state.tracks.playlistTracks,
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-
     setActivePlaylist: (data) => {
       dispatch(setActivePlaylist(data))
     },
-    appendTracks: (data) => {
-      dispatch(appendTracks(data))
+    appendTracks: (ownerId, playlistId) => {
+      dispatch(appendTracks(ownerId, playlistId))
     },
   }
 }

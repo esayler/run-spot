@@ -10,10 +10,13 @@ import rootReducer from '../reducers'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import HeaderContainer from '../containers/HeaderContainer'
 import ReduxThunk from 'redux-thunk'
-
+// import { loadingBarMiddleware } from 'react-redux-loading-bar'
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
-const store = createStore(rootReducer, /* preloadedState, */ composeEnhancers(
-    applyMiddleware(ReduxThunk)
+import promiseMiddleware from 'redux-promise-middleware'
+import { loadingBarMiddleware } from 'react-redux-loading-bar'
+
+const store = createStore(rootReducer, composeEnhancers(
+    applyMiddleware(ReduxThunk, promiseMiddleware(), loadingBarMiddleware())
   ))
 
 export default class Root extends React.Component {
@@ -22,9 +25,7 @@ export default class Root extends React.Component {
       <Provider store={store}>
         <Router>
           <div className='app'>
-
             <HeaderContainer />
-
             <div className='content'>
               <Route exact path='/' component={Home} />
               <Route path='/about' component={About} />

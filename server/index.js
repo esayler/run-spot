@@ -121,7 +121,7 @@ app.use('/api/auth/spotify',
 app.get('/api/callback',
   passport.authenticate('spotify', { failureRedirect: '/fail' }),
   (req, res) => {
-    res.redirect(`http://localhost:8000?user=${req.user.id}`)
+    res.redirect(`http://localhost:8000/playlists`)
   }
 )
 

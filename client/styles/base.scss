@@ -6,7 +6,7 @@
 
 
 html {
-  background: $black;
+  // background: $black;
 }
 
 body {
@@ -14,17 +14,13 @@ body {
   font-weight: 300;
   color: $white;
   margin-top: 0;
-  margin-left: 0;
-  margin-right: 0;
+  margin: 0 auto;
 }
 
 .content {
   background: $black;
   margin: 0 auto;
-  max-width: 900px;
-}
-
-.app {
+  max-width: 90%;
 }
 
 .active {
@@ -45,9 +41,9 @@ a {
   }
 }
 
-.hello-link {
+.title {
   display: inline-block;
-  margin: 15px 0;
+  margin: 10px 0;
   color: $link-color;
   text-decoration: none;
 
@@ -66,23 +62,29 @@ a {
 }
 
 .header {
-  margin-top: 0;
-  margin-bottom: 20px;
+  margin: 10px auto;
   height: 60px;
   font-family: 'Montserrat', 'Helvetica Neue';
-  border-bottom: 1px solid $green;
+  // border-bottom: 1px solid $green;
   // text-align: center;
-  background: $black;
+  // background: $black;
   z-index: 1;
     a {
       text-decoration: none;
     }
 }
 
+.loading-bar {
+  margin-top: 0;
+  background-color: $green;
+  height: 2px;
+  position: absolute;
+}
+
 .navbar {
   display: inline-block;
-  margin-top: 20px;
-  margin-right: 20px;
+  margin-top: 10px;
+  margin-right: 0px;
   float: right;
   font-size: 1.5em;
 }
@@ -107,7 +109,6 @@ a {
 
 .content-box {
   height: auto;
-  max-width: 900px;
   margin: 20px auto;
   padding: 20px;
   border-radius: 10px;
@@ -123,18 +124,18 @@ a {
     padding: 6px 60px;
     border: 1px solid $black;
     border-radius: 30px;
+    margin-top: 0;
 
     &:hover {
       background: $black;
       color: $green;
       border: 1px solid $green;
-
     }
   }
 }
 
 .user-profile-display {
   display: inline-block;
-  margin-left: 40px;
+  margin-left: 20px;
   font-weight: lighter;
 }

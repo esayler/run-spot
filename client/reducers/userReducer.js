@@ -1,10 +1,10 @@
 const user = (state = false, action) => {
   switch (action.type) {
     case 'SET_ACTIVE_USER':
-      return action.data;
+      return action.data
     default:
-      return state;
+      return state
   }
-};
+}
 
-export default user;
+export default user

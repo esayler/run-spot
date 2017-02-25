@@ -8,8 +8,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    appendPlaylists: (data) => {
-      dispatch(appendPlaylists(data))
+    appendPlaylists: () => {
+      dispatch(appendPlaylists())
     },
   }
 }

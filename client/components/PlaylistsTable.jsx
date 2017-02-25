@@ -19,7 +19,7 @@ const propTypes = {
 class PlaylistsTable extends Component {
   render() {
     return (
-      <Table className='table-inverse'
+      <Table key='1' className='table-inverse'
         {...this.props}
         columns={columns}
       />

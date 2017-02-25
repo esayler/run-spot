@@ -2,6 +2,7 @@ import React from 'react'
 import axios from 'axios'
 import { Column, Table } from 'react-virtualized'
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
+import LoadingBar from 'react-redux-loading-bar'
 
 export default class Header extends React.Component {
 
@@ -23,7 +24,7 @@ export default class Header extends React.Component {
 
     return (
       <div className='header'>
-        <Link to='/' className='hello-link'><h1>rn.spt</h1></Link>
+        <Link to='/' className='title'><h1>rn.spt</h1></Link>
 
         <nav className='navbar'>
           <Link to='/'>Home</Link>
@@ -32,6 +33,7 @@ export default class Header extends React.Component {
           <Link to='/tracks'>Tracks</Link>
           {user}
         </nav>
+        <LoadingBar className='loading-bar' />
       </div>
     )
   }
