@@ -10,11 +10,28 @@ export default class Tracks extends React.Component {
     const playlistId = this.props.match.params.playlistId
 
     this.props.appendTracks(ownerId, playlistId)
+    this.handleSubmit = this.handleSubmit.bind(this)
+  }
+
+  handleSubmit() {
+    this.props.createNewPlaylist()
   }
 
   render() {
-    // return null
-    // const renderTracks = this.state.tracks ? this.state.tracks.map(track => (<div key={track.id}> {track.name} - {track.artist} - {track.album} </div>)) : []
-    return (<TracksTable className='tracks-table' data={this.props.tracks ? this.props.tracks : []} />)
+    // console.log('Tracks props', this.props);
+    const { tracks } = this.props
+    if (tracks.length > 0) {
+      return (
+        <div>
+          <button className='create-new-playlist-btn' onClick={this.handleSubmit}>Create New Playlist</button>
+          <div>
+            <h3>Tracks</h3>
+            <TracksTable className='tracks-table' data={tracks} />
+          </div>
+      </div>
+      )
+    } else {
+      return (<div>No Tracks to Display!</div>)
+    }
   }
 }

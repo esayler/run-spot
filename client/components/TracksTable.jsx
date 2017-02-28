@@ -7,6 +7,7 @@ const columns = [
   { key: 'name', header: 'Track Name', sortable: true, searchable: true },
   { key: 'artist', header: 'Artist', sortable: true, searchable: true },
   { key: 'album', header: 'Album', sortable: true, searchable: true },
+  { key: 'tempo', header: 'BPM', sortable: true, searchable: true, filterable: true },
 ]
 
 const propTypes = {
@@ -17,6 +18,9 @@ const propTypes = {
 
 class TracksTable extends Component {
   render() {
+    // console.log('tracks props', this.props);
+    // console.log('tracks table props', this.props)
+    // console.log(this.props)
     return (
       <Table className='table-inverse'
         {...this.props}
@@ -27,4 +31,4 @@ class TracksTable extends Component {
 }
 
 TracksTable.propTypes = propTypes
-export default sematable('PlaylistTracks', TracksTable, columns, {defaultPageSize: 20})
+export default sematable('PlaylistTracks', TracksTable, columns, { defaultPageSize: 50 })

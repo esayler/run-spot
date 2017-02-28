@@ -93,6 +93,20 @@ a {
   background: $black;
 }
 
+.create-new-playlist-btn {
+  margin: 20px auto;
+  background-color: $green;
+  font-size: 20px;
+  color: $white;
+  padding: 6px 60px;
+  border: 1px solid $black;
+  border-radius: 30px;
+    &:hover {
+      background: $black;
+      color: $green;
+      border: 1px solid $green;
+    }
+}
 
 
 .not-found {

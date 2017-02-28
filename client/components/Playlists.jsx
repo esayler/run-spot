@@ -10,6 +10,16 @@ export default class Playlists extends React.Component {
   }
 
   render() {
-    return (<PlaylistsTable className='playlists-table' data={this.props.userPlaylists ? this.props.userPlaylists : []} />)
+    const { playlists } = this.props
+
+    if (playlists) {
+      return (
+        <div>
+          <PlaylistsTable className='playlists-table' data={playlists} />
+        </div>
+      )
+    } else {
+      return (<div>No Playlists to Display!</div>)
+    }
   }
 }

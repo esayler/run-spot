@@ -7,6 +7,7 @@ const propTypes = {
 
 class PlaylistsTableActions extends Component {
   render() {
+    // console.log('PlaylistTableActions Props ', this.props)
     const row = this.props.row
     return (
       <Link to={`/tracks/${row.owner}/${row.id}`}>

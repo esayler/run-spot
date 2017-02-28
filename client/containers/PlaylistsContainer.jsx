@@ -3,7 +3,7 @@ import { appendPlaylists } from '../actions'
 import Playlists from '../components/Playlists'
 
 const mapStateToProps = (state) => {
-  return { userPlaylists: state.playlists.userPlaylists }
+  return { playlists: state.playlists.data }
 }
 
 const mapDispatchToProps = (dispatch) => {

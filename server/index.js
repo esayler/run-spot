@@ -6,6 +6,9 @@ import { CLIENT_ID, CLIENT_SECRET } from '../secret'
 import { Strategy as SpotifyStrategy } from 'passport-spotify'
 import morgan from 'morgan'
 import cors from 'cors'
+import fetch from 'isomorphic-fetch';
+import bodyParser from 'body-parser'
+import axios from 'axios'
 // const api = require('./api')
 
 import webpack from 'webpack'
@@ -66,6 +69,8 @@ const checkAuth = (req, res, next) => {
 const app = express()
 app.use(cors())
 app.options('*', cors())
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
 // app.use(getRefreshedToken)
 app.use(session({ secret: 'keyboard cat' }))
 app.use(passport.initialize())
@@ -87,15 +92,27 @@ app.get('/api', (req, res) => {
   res.send('Hello! Login by visiting /auth/spotify')
 })
 
-app.get('/api/tracks/:userId/:playlistId', (req, res) => {
-  spotifyApi.getPlaylistTracks(`${req.params.userId}`, `${req.params.playlistId}`, { 'offset': 0, 'limit': 20, 'fields': 'items' })
+app.get('/api/tracks/:userId/:playlistId/:offset/:limit', (req, res) => {
+  spotifyApi.getPlaylistTracks(`${req.params.userId}`, `${req.params.playlistId}`, { 'offset': `${req.params.offset}`, 'limit': `${req.params.limit}`, 'fields': 'items' })
     .then(data => res.json(data.body),
-    err => console.log('Something went wrong!', util.inspect(err)))
+    err => {
+      console.log('Something went wrong!', util.inspect(err))
+      res.json(err)
+    }
+  )
 })
 
-app.get('/api/playlists', (req, res) => spotifyApi.getUserPlaylists(req.user.id)
+app.get('/api/playlists/:offset/:limit', (req, res) => spotifyApi.getUserPlaylists(req.user.id, { 'offset': req.params.offset, 'limit': req.params.limit })
   .then(data => res.json(data.body),
     err => console.log('Something went wrong!', util.inspect(err))
+))
+
+app.get('/api/audiofeatures/:trackId', (req, res) => spotifyApi.getAudioFeaturesForTrack(req.params.trackId)
+  .then(data => res.json(data.body),
+  err => {
+    console.log('Something went wrong!', util.inspect(err))
+    res.json(err)
+  }
 ))
 
 app.get('/api/fail', (req, res) => {
@@ -110,6 +127,7 @@ app.use('/api/auth/spotify',
   passport.authenticate('spotify', {
     scope: [
       'user-read-email',
+      'playlist-modify-private',
       'user-read-private',
       'playlist-read-private',
       'user-library-read',
@@ -134,6 +152,65 @@ app.listen(3000, () => {
   console.log(chalk.green(`Express is running, listening on port 3000`))
 })
 
+// app.post('/api/create', (req, res) => {
+//   axios.post(`https://api.spotify.com/v1/users/${req.user.id}/playlists`, {
+//     name: 'My Cool Playlist',
+//     public: false,
+//     collaborative: false,
+//   }, {
+//     headers: {
+//       'Content-Type': 'application/json',
+//       'Authorization': 'Bearer ' + spotifyApi.getAccessToken(),
+//     },
+//   }).then(payload => res.status(payload.status).send(payload))
+//     .catch(err => res.send(err))
+// })
+
+app.post('/api/create', (req, res) => {
+  const uris = req.body.uris
+  fetch(`https://api.spotify.com/v1/users/${req.user.id}/playlists`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + spotifyApi.getAccessToken(),
+    },
+    body: JSON.stringify({
+      name: 'My Awesome Playlist',
+      public: false,
+      collaborative: false,
+    }),
+  }).then(checkStatus)
+    .then(parseJSON)
+    .then(response => {
+      console.log(response)
+      fetch(`${response.href}/tracks`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + spotifyApi.getAccessToken(),
+        },
+        body: JSON.stringify({
+          uris,
+        }),
+      }).then(checkStatus)
+        .then(parseJSON)
+        .then(response => {
+          console.log('add tracks res: ', response)
+          res.send(res)
+        })
+        .catch(err => {
+          console.log('inside fetch error: ', err)
+          res.send(err)
+        })
+      // res.status(payload.status).send(payload)
+    })
+    .catch(err => {
+      console.log('outside fetch error: ', err)
+      res.send(err)
+      // res.status(err.status).send(err)
+    })
+})
+
 const reactServer = new WebpackDevServer(webpack(webpackConfig), {
   contentBase: '/',
   proxy: {
@@ -149,3 +226,17 @@ const reactServer = new WebpackDevServer(webpack(webpackConfig), {
 reactServer.use('/', express.static(resolve(__dirname, '../public')))
 
 reactServer.listen(8000, () => console.log(chalk.green(`React is listening on port 8000`)));
+
+const checkStatus = (response) => {
+  if (response.status >= 200 && response.status < 300) {
+    return response
+  } else {
+    var error = new Error(response.statusText)
+    error.response = response
+    throw error
+  }
+}
+
+const parseJSON = response => {
+  return response.json()
+}

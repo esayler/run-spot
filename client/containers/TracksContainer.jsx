@@ -1,11 +1,20 @@
 import { connect } from 'react-redux'
-import { setActiveUser, setActivePlaylist, appendTracks } from '../actions'
+
+import {
+  setActivePlaylist,
+  appendTracks,
+  createNewPlaylist } from '../actions'
+
 import Tracks from '../components/Tracks'
+import { makeSelectors } from 'sematable'
 
 const mapStateToProps = (state) => {
+  const selectors = makeSelectors('PlaylistTracks')
+
   return {
     activePlaylist: state.playlists.activePlaylist,
-    tracks: state.tracks.playlistTracks,
+    tracks: state.tracks,
+    sortInfo: selectors.getSortInfo(state),
   }
 }
 
@@ -16,6 +25,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     appendTracks: (ownerId, playlistId) => {
       dispatch(appendTracks(ownerId, playlistId))
+    },
+    createNewPlaylist: () => {
+      dispatch(createNewPlaylist())
     },
   }
 }

@@ -1,16 +1,13 @@
 const playlists = (state = [], action) => {
   switch (action.type) {
     case 'APPEND_PLAYLISTS_PENDING':
-      return Object.assign({}, state, { userPlaylists: [], isPending: true })
+      return state
     case 'APPEND_PLAYLISTS_FULFILLED':
-      return Object.assign({}, state, { userPlaylists: action.payload, isPending: false })
+      return action.payload
     case 'APPEND_PLAYLISTS_REJECTED':
-      return {
-        isRejected: true,
-        error: action.payload,
-      }
+      return state
     case 'SET_ACTIVE_PLAYLIST':
-      return Object.assign({}, state, { activePlaylist: action.data })
+      return state
     default:
       return state
   }
