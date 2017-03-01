@@ -68,7 +68,8 @@ module.exports = {
           {
             loader: 'sass-loader',
             options: {
-              includePaths: resolve(__dirname, 'client/fonts'),
+              includePaths: [resolve(__dirname, 'client/fonts'), resolve(__dirname, 'client/components/NotificationsSystem/theme/styles')],
+
             },
           },
         ],

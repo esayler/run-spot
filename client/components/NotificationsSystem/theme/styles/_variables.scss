@@ -1,0 +1,42 @@
+// Media queries breakpoints
+@import '../../../../styles/variables';
+
+$screen-sm-min: 768px;
+$screen-md-min: 992px;
+$screen-xs-max: ($screen-sm-min - 1);
+
+$window-padding: 10px;
+
+// Notification variables
+$notification-max-width: 360px;
+$notification-button-width: 90px;
+$notification-close-button: "\D7";
+
+$notification-success-bg: $light-black;
+$notification-success-border: $green;
+$notification-success-color: $green;
+$notification-success-icon: "\f058";
+
+$notification-default-bg: $light-black;
+$notification-default-border: #eeeeee;
+$notification-default-color: #333333;
+
+$notification-info-bg: $light-black;
+$notification-info-border: #31708f;
+$notification-info-color: #31708f;
+$notification-info-icon: "\f05a";
+
+$notification-warning-bg: $light-black;
+$notification-warning-border: #faebcc;
+$notification-warning-color: #faebcc;
+$notification-warning-icon: "\f071";
+
+$notification-error-bg: $light-black;
+$notification-error-border: #E91E63;
+$notification-error-color: #EC407A  ;
+$notification-error-icon: "\f057";
+
+$notification-loading-bg: $light-black;
+$notification-loading-border: #31708f;
+$notification-loading-color: #31708f;
+$notification-loading-icon: "\f110";

@@ -13,7 +13,7 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 import promiseMiddleware from 'redux-promise-middleware'
 import { loadingBarMiddleware } from 'react-redux-loading-bar'
 import theme from 'reapop-theme-bootstrap'
-import NotificationsSystem from 'reapop'
+import NotificationsSystem from './NotificationsSystem'
 
 const store = createStore(rootReducer, composeEnhancers(
     applyMiddleware(ReduxThunk, promiseMiddleware(), loadingBarMiddleware())
@@ -25,7 +25,7 @@ export default class Root extends React.Component {
       <Provider store={store}>
         <Router>
           <div className='app'>
-            <NotificationsSystem theme={theme} />
+            <NotificationsSystem />
             <HeaderContainer />
             <div className='content'>
               <Route exact path='/' component={Home} />
