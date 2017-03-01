@@ -3,10 +3,10 @@ import sematable, { Table } from 'sematable'
 import TracksTableActions from './PlaylistsTableActions'
 
 const columns = [
-  { key: 'id', header: 'id', sortable: false, searchable: false, primaryKey: true, hidden: true },
-  { key: 'name', header: 'Track Name', sortable: true, searchable: true },
-  { key: 'artist', header: 'Artist', sortable: true, searchable: true },
-  { key: 'album', header: 'Album', sortable: true, searchable: true },
+  { key: 'id', header: 'id', sortable: false, searchable: false, filterable: false, primaryKey: true, hidden: true },
+  { key: 'name', header: 'Track Name', sortable: true, searchable: true, filterable: true },
+  { key: 'artist', header: 'Artist', sortable: true, searchable: true, filterable: true },
+  { key: 'album', header: 'Album', sortable: true, searchable: true, filterable: true },
   { key: 'tempo', header: 'BPM', sortable: true, searchable: true, filterable: true },
 ]
 
@@ -22,8 +22,10 @@ class TracksTable extends Component {
     // console.log('tracks table props', this.props)
     // console.log(this.props)
     return (
-      <Table className='table-inverse'
+      <Table
         {...this.props}
+        selectable
+        className='table-inverse table-hover table-sm'
         columns={columns}
       />
     )

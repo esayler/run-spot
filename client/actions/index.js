@@ -1,4 +1,5 @@
 import axios from 'axios'
+import {addNotification as notify} from 'reapop'
 
 export const appendPlaylists = (offset, limit) => (dispatch, getState) => {
   let dispatchOffset = offset || 0
@@ -84,7 +85,11 @@ export const createNewPlaylist = () => (dispatch, getState) => {
     payload: axios.post(`http://localhost:8000/api/create/`, {
       uris: trackIds,
     }).then(res => {
-      console.log(res)
+      console.log('CREATE_NEW_PLAYLIST: ', res)
+      dispatch(notify({ message: 'Successfully Created New Playlist!', position: 'tc', status: 'success' }))
+    }).catch(err => {
+      console.log(err)
+      dispatch(notify({ message: 'Problem Creating Playlist', position: 'tc', status: 'error' }))
     }),
   })
 }
@@ -95,5 +100,20 @@ export const sortTracksDesc = () => (dispatch, getState) => {
   dispatch({
     type: 'SORT_CUSTOM_TRACKS_DESC',
     tracks,
+  })
+}
+
+export const getActiveUser = () => (dispatch, getState) => {
+  dispatch({
+    type: 'GET_ACTIVE_USER',
+    payload: axios.get('http://localhost:8000/api/me/'),
+              //  .then(res => { this.props.setActiveUser(res.data.body) })
+  }).then(res => {
+    console.log(res)
+    dispatch(notify({ message: 'Succesfully Logged in', position: 'tc', status: 'success' }))
+    dispatch(setActiveUser(res.value.data.body))
+  }).catch(err => {
+    dispatch(notify({ message: 'Error Logging In!', position: 'tc', status: 'error' }))
+    console.log(err)
   })
 }

@@ -4,10 +4,10 @@ import PlayListsTableActions from './PlaylistsTableActions'
 
 const columns = [
   { key: 'id', header: 'ID', sortable: false, searchable: false, primaryKey: true, hidden: true },
-  { header: 'Playlists', sortable: true, searchable: false, Component: PlayListsTableActions },
-  { key: 'name', header: 'Playlist', sortable: true, searchable: true, hidden: true },
+  { header: 'Playlists', sortable: true, searchable: false, sortable: true, Component: PlayListsTableActions },
+  { key: 'name', header: 'Playlist', searchable: true, hidden: true },
   { key: 'owner', header: 'Owner', sortable: true, searchable: true },
-  { key: 'total', header: 'Total', sortable: true, searchable: false },
+  { key: 'total', header: '# of Tracks', sortable: true, searchable: false },
 ]
 
 const propTypes = {
@@ -19,8 +19,9 @@ const propTypes = {
 class PlaylistsTable extends Component {
   render() {
     return (
-      <Table className='table-inverse'
+      <Table
         {...this.props}
+        className='table-inverse table-hover table-sm'
         columns={columns}
       />
     )

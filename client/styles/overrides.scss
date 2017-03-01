@@ -1,0 +1,83 @@
+@import './variables';
+
+.Select-control {
+  border-color: $grey;
+  background-color: $light-black;
+}
+
+.is-open > .Select-control {
+	border-color: $grey;
+  background: $light-black;
+}
+
+.Select-control {
+	border-color: darken($green, 20%);
+  background-color: $black;
+}
+
+.Select-menu-outer {
+  border: 1px solid $grey;
+  border-top-color: mix($black, $grey, 50%);
+  background-color: $light-black;
+}
+
+.Select-input {
+  > input {
+    color: white;
+  }
+}
+
+.Select-option {
+  background-color: $light-black;
+  color: $light-grey;
+
+  &.is-selected {
+    background-color: $red;
+    color: $white;
+  }
+
+  &.is-focused {
+    background-color: $light-black;
+    color: $light-grey;
+  }
+
+  &:hover {
+    background-color: mix($green, $black, 20%);
+    color: $white;
+  }
+
+  &.is-disabled {
+    color: grey;
+    cursor: default;
+  }
+}
+
+.Select-noresults {
+  color: $light-grey;
+}
+
+.Select--multi {
+  .Select-value {
+    border: 1px solid darken($green, 20%);
+    background-color: $light-black;
+    color: $light-grey;
+  }
+
+  a.Select-value-label {
+    color: $light-grey;
+  }
+
+  .Select-value-icon {
+    border-right: 1px solid darken($green, 20%);
+    color: $green;
+
+    &:hover,
+    &:focus {
+      background-color: mix($green, $black, 20%);
+      color: $green;
+    }
+    &:active {
+      background-color: $light-black;
+    }
+  }
+}

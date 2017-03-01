@@ -4,5 +4,50 @@
 // without modifying source files.
 @import '../../variables';
 
-$body-bg:    $black;
-$body-color: $white;
+$body-bg: $light-black;
+$body-color: $light-grey;
+
+$brand-primary: $green;
+
+$brand-success: $green;
+// $brand-warning:
+// $brand-danger:
+
+// $blue: $green;
+// $teal: $green;
+
+
+$state-info-border: darken($green, 20%);
+
+$btn-info-border: $light-grey;
+
+$input-bg: $light-black;
+$input-color: $light-grey;
+$input-border-color: darken($green, 20%);
+$dropdown-bg: $light-black;
+
+$state-info-text: $green;
+$state-info-bg: rgba($green, .10);
+$state-info-border: darken($green, 20%);
+
+$table-inverse-bg: $light-black;
+$table-inverse-color: $white;
+
+$table-bg-accent: rgba($white, 0.05);
+$table-bg-hover: rgba($green, 0.05);
+$table-bg-active: $table-bg-hover;
+
+$pagination-color:                     $light-grey;
+$pagination-bg:                        $light-black;
+$pagination-border-color:              mix($green, $black, 20%);
+
+$pagination-hover-color:               $light-grey;
+$pagination-hover-bg:                  mix($green, $black, 20%);
+$pagination-hover-border:              $green;
+
+$pagination-active-color:              $light-grey;
+$pagination-active-bg:                 mix($green, $black, 20%);
+$pagination-active-border:             darken($green, 20%);
+$pagination-disabled-color:            lighten($grey, 10%);
+$pagination-disabled-bg:               $grey;
+$pagination-disabled-border:           lighten($grey, 10%);

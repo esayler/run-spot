@@ -47,19 +47,28 @@ module.exports = {
       {
         test: /\.css$/,
         use: [
-          'style-loader',
-          'css-loader',
+          { loader: 'style-loader' },
+          { loader: 'css-loader' },
+          // { loader: 'sass-loader', options: { sourceMap: false } },
         ],
+      },
+      {
+        test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        use: { loader: 'url-loader', options: { limit: 10000, minetype: 'application/font-woff' } },
+      },
+      {
+        test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        use: 'file-loader',
       },
       {
         test: /\.scss$/,
         use: [
           'style-loader',
-          'css-loader?sourceMap',
+          'css-loader',
           {
-            loader: 'sass-loader?sourceMap',
+            loader: 'sass-loader',
             options: {
-              includePaths: resolve(__dirname, 'node_modules/normalize-scss/sass'),
+              includePaths: resolve(__dirname, 'client/fonts'),
             },
           },
         ],

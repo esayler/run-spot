@@ -82,9 +82,11 @@ app.use(morgan('dev'))
 app.get('/api/me', (req, res) => {
   spotifyApi.getMe()
     .then(function (data) {
+      console.log(data)
       res.send(data)
     }, function (err) {
-      console.log('Something went wrong!', err)
+      console.log('err', err)
+      res.status(err.statusCode).json(err)
     })
 })
 
@@ -182,7 +184,7 @@ app.post('/api/create', (req, res) => {
   }).then(checkStatus)
     .then(parseJSON)
     .then(response => {
-      console.log(response)
+      console.log(chalk.green('createNewPlaylist response: ', util.inspect(response)))
       fetch(`${response.href}/tracks`, {
         method: 'POST',
         headers: {
@@ -193,20 +195,19 @@ app.post('/api/create', (req, res) => {
           uris,
         }),
       }).then(checkStatus)
-        .then(parseJSON)
         .then(response => {
-          console.log('add tracks res: ', response)
-          res.send(res)
+          console.log(chalk.green('add tracks res: ', util.inspect(response)))
+          res.status(200).json(response)
         })
         .catch(err => {
-          console.log('inside fetch error: ', err)
-          res.send(err)
+          console.log(chalk.red('inside fetch error: ', util.inspect(err)))
+          res.status(500).json(err)
         })
       // res.status(payload.status).send(payload)
     })
     .catch(err => {
-      console.log('outside fetch error: ', err)
-      res.send(err)
+      console.log(chalk.red('outside fetch error: ', util.inspect(err)))
+      res.status(500).json(err)
       // res.status(err.status).send(err)
     })
 })

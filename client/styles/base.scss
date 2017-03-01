@@ -1,24 +1,51 @@
-@import 'normalize';
+// @import 'normalize';
+
+@font-face {
+    font-family: 'Circular';
+    src: url('../fonts/circular-light.woff2') format('woff2'), url('../fonts/circular-light.woff') format('woff');
+    font-weight: 200;
+    font-style: normal
+}
+
+@font-face {
+    font-family: 'Circular';
+    src: url('../fonts/circular-book.woff2') format('woff2'), url('../fonts/circular-book.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Circular';
+    src: url('../fonts/circular-medium.woff2') format('woff2'), url('../fonts/circular-medium.woff') format('woff');
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Circular';
+    src: url('../fonts/circular-bold.woff2') format('woff2'), url('../fonts/circular-bold.woff') format('woff');
+    font-weight: 800;
+    font-style: normal;
+}
+
 @import url('https://fonts.googleapis.com/css?family=Montserrat:200,300,400|Open+Sans:300,400');
 @import './bootstrap/scss/bootstrap';
-
+@import './overrides';
 @import './variables';
 
-
 html {
-  // background: $black;
+  background: $light-black;
 }
 
 body {
-  font-family: 'Montserrat', 'Helvetica Neue';
-  font-weight: 300;
-  color: $white;
+  font-family: 'Circular', sans-serif;
+  font-weight: 200;
+  font-size: 1em;
   margin-top: 0;
-  margin: 0 auto;
 }
 
 .content {
-  background: $black;
+  background: $light-black;
   margin: 0 auto;
   max-width: 90%;
 }
@@ -41,15 +68,17 @@ a {
   }
 }
 
+
+
 .title {
   display: inline-block;
-  margin: 10px 0;
+  // font-size: 36px;
+
   color: $link-color;
   text-decoration: none;
 
   h1 {
-    font-weight: normal;
-    margin: 0 20px;
+    font-weight: 200;
   }
 
   &:hover {
@@ -62,17 +91,25 @@ a {
 }
 
 .header {
+
   margin: 10px auto;
   height: 60px;
-  font-family: 'Montserrat', 'Helvetica Neue';
-  // border-bottom: 1px solid $green;
+
+  border-bottom: 1px solid $green;
+  margin-bottom: 0;
   // text-align: center;
-  // background: $black;
+  background: $black;
   z-index: 1;
     a {
       text-decoration: none;
     }
 }
+
+.header-container {
+  margin-bottom: 20px;
+}
+
+
 
 .loading-bar {
   margin-top: 0;
@@ -81,13 +118,15 @@ a {
   position: absolute;
 }
 
-.navbar {
+.navigation {
   display: inline-block;
   margin-top: 10px;
   margin-right: 0px;
   float: right;
   font-size: 1.5em;
 }
+
+
 
 .playlists-table-container {
   background: $black;
@@ -96,6 +135,7 @@ a {
 .create-new-playlist-btn {
   margin: 20px auto;
   background-color: $green;
+  font-weight: 400;
   font-size: 20px;
   color: $white;
   padding: 6px 60px;
@@ -152,4 +192,8 @@ a {
   display: inline-block;
   margin-left: 20px;
   font-weight: lighter;
+}
+
+.header-content {
+  margin: 0 60px;
 }

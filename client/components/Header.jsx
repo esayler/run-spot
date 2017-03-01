@@ -11,10 +11,7 @@ export default class Header extends React.Component {
   }
 
   componentDidMount() {
-    axios.get('http://localhost:8000/api/me/')
-      .then(res => {
-        this.props.setActiveUser(res.data.body)
-      })
+    this.props.getActiveUser()
   }
 
   render() {
@@ -23,16 +20,20 @@ export default class Header extends React.Component {
       : <Link onClick={this.handleLogin.bind(this)} to='/api/auth/spotify' className='btn btn-login'>Login</Link>
 
     return (
-      <div className='header'>
-        <Link to='/' className='title'><h1>rn.spt</h1></Link>
+      <div className='header-container'>
+        <div className='header'>
+          <div className='header-content'>
+            <Link to='/' className='navbar-title title'><h1>rn.spt</h1></Link>
 
-        <nav className='navbar'>
-          <Link to='/'>Home</Link>
-          <Link to='/about'>About</Link>
-          <Link to='/playlists'>Playlists</Link>
-          <Link to='/tracks'>Tracks</Link>
-          {user}
-        </nav>
+            <nav className='navigation'>
+              <Link to='/'>Home</Link>
+              <Link to='/about'>About</Link>
+              <Link to='/playlists'>Playlists</Link>
+              <Link to='/tracks'>Tracks</Link>
+              {user}
+            </nav>
+          </div>
+        </div>
         <LoadingBar className='loading-bar' />
       </div>
     )

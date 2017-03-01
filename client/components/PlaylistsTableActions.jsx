@@ -10,7 +10,7 @@ class PlaylistsTableActions extends Component {
     // console.log('PlaylistTableActions Props ', this.props)
     const row = this.props.row
     return (
-      <Link to={`/tracks/${row.owner}/${row.id}`}>
+      <Link className='playlist-link' to={`/tracks/${row.owner}/${row.id}`}>
         {this.props.row.name}
       </Link>
     )

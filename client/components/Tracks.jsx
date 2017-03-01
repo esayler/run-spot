@@ -25,7 +25,7 @@ export default class Tracks extends React.Component {
         <div>
           <button className='create-new-playlist-btn' onClick={this.handleSubmit}>Create New Playlist</button>
           <div>
-            <h3>Tracks</h3>
+            <h2>Tracks</h2>
             <TracksTable className='tracks-table' data={tracks} />
           </div>
       </div>
