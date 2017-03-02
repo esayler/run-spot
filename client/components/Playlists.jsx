@@ -4,8 +4,16 @@ import { Column, Table } from 'react-virtualized'
 import PlaylistsTable from './PlaylistsTable'
 
 export default class Playlists extends React.Component {
+  constructor() {
+    super()
+    this.handleClick = this.handleClick.bind(this)
+  }
 
   componentWillMount() {
+    this.props.appendPlaylists()
+  }
+
+  handleClick() {
     this.props.appendPlaylists()
   }
 
@@ -15,6 +23,7 @@ export default class Playlists extends React.Component {
     if (playlists) {
       return (
         <div>
+          <button className='button' onClick={() => this.handleClick()}>Get more Playlists</button>
           <PlaylistsTable className='playlists-table' data={playlists} />
         </div>
       )

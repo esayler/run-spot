@@ -6,7 +6,7 @@ import { CLIENT_ID, CLIENT_SECRET } from '../secret'
 import { Strategy as SpotifyStrategy } from 'passport-spotify'
 import morgan from 'morgan'
 import cors from 'cors'
-import fetch from 'isomorphic-fetch';
+import fetch from 'isomorphic-fetch'
 import bodyParser from 'body-parser'
 import axios from 'axios'
 // const api = require('./api')
@@ -95,7 +95,7 @@ app.get('/api', (req, res) => {
 })
 
 app.get('/api/tracks/:userId/:playlistId/:offset/:limit', (req, res) => {
-  spotifyApi.getPlaylistTracks(`${req.params.userId}`, `${req.params.playlistId}`, { 'offset': `${req.params.offset}`, 'limit': `${req.params.limit}`, 'fields': 'items' })
+  spotifyApi.getPlaylistTracks(`${req.params.userId}`, `${req.params.playlistId}`, { 'offset': `${req.params.offset}`, 'limit': `${req.params.limit}` })
     .then(data => res.json(data.body),
     err => {
       console.log('Something went wrong!', util.inspect(err))

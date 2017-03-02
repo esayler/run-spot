@@ -1,9 +1,9 @@
-const playlists = (state = [], action) => {
+const playlists = (state = { data: [] }, action) => {
   switch (action.type) {
     case 'APPEND_PLAYLISTS_PENDING':
       return state
     case 'APPEND_PLAYLISTS_FULFILLED':
-      return action.payload
+      return Object.assign({}, { data: state.data.concat(action.payload.data), meta: action.payload.meta })
     case 'APPEND_PLAYLISTS_REJECTED':
       return state
     case 'SET_ACTIVE_PLAYLIST':
