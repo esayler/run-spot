@@ -1,6 +1,4 @@
 import React from 'react'
-import axios from 'axios'
-import { Column, Table } from 'react-virtualized'
 import TracksTable from './TracksTable'
 
 export default class Tracks extends React.Component {
@@ -18,7 +16,6 @@ export default class Tracks extends React.Component {
   }
 
   render() {
-    // console.log('Tracks props', this.props);
     const { tracks } = this.props
     if (tracks.length > 0) {
       return (

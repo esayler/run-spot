@@ -18,9 +18,6 @@ const propTypes = {
 
 class TracksTable extends Component {
   render() {
-    // console.log('tracks props', this.props);
-    // console.log('tracks table props', this.props)
-    // console.log(this.props)
     return (
       <Table
         {...this.props}

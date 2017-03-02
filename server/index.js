@@ -154,19 +154,6 @@ app.listen(3000, () => {
   console.log(chalk.green(`Express is running, listening on port 3000`))
 })
 
-// app.post('/api/create', (req, res) => {
-//   axios.post(`https://api.spotify.com/v1/users/${req.user.id}/playlists`, {
-//     name: 'My Cool Playlist',
-//     public: false,
-//     collaborative: false,
-//   }, {
-//     headers: {
-//       'Content-Type': 'application/json',
-//       'Authorization': 'Bearer ' + spotifyApi.getAccessToken(),
-//     },
-//   }).then(payload => res.status(payload.status).send(payload))
-//     .catch(err => res.send(err))
-// })
 
 app.post('/api/create', (req, res) => {
   const uris = req.body.uris
