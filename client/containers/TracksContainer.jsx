@@ -3,7 +3,8 @@ import { connect } from 'react-redux'
 import {
   setActivePlaylist,
   appendTracks,
-  createNewPlaylist } from '../actions'
+  createNewPlaylist,
+  resetTracks } from '../actions'
 
 import Tracks from '../components/Tracks'
 import { makeSelectors } from 'sematable'
@@ -28,6 +29,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     createNewPlaylist: () => {
       dispatch(createNewPlaylist())
+    },
+    resetTracks: () => {
+      dispatch(resetTracks())
     },
   }
 }

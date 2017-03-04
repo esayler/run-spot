@@ -32,7 +32,7 @@ export default class Root extends React.Component {
               <Route path='/about' component={About} />
               <Route path='/playlists' component={PlaylistsContainer} />
               <Route path='/tracks/:ownerId/:playlistId' component={TracksContainer} />
-              {/* <Route path='/api/auth/spotify' render={() => {}} /> */}
+              <Route path='/tracks/' component={TracksContainer} />
             </div>
           </div>
         </Router>

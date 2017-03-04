@@ -5,6 +5,12 @@ export const appendPlaylists = () => (dispatch, getState) => {
   const { playlists } = getState()
   const { playlistsMetaData } = getState()
 
+  dispatch({
+    type: 'SET_TRACKS_META_DATA',
+    data: null,
+  })
+
+
   let dispatchLimit = 50
   let dispatchOffset = playlistsMetaData ? playlistsMetaData.offset + dispatchLimit : 0
   if (!playlistsMetaData || (playlistsMetaData.offset + playlistsMetaData.limit < playlistsMetaData.total)) {
@@ -23,6 +29,8 @@ export const appendPlaylists = () => (dispatch, getState) => {
           }
         ),
     })
+  } else {
+    dispatch(notify({ message: 'No More Playlists to Add!', position: 'tc', status: 'error' }))
   }
 }
 
@@ -36,6 +44,7 @@ export const appendTracks = (ownerId, playlistId) => (dispatch, getState) => {
       payload:
       axios.get(`http://localhost:8000/api/tracks/${ownerId}/${playlistId}/${dispatchOffset}/${dispatchLimit}`)
       .then(res => {
+        console.log('tracksResponse', res);
         const meta = { next: res.data.next, offset: res.data.offset, limit: res.data.limit, total: res.data.total }
         dispatch({
           type: 'SET_TRACKS_META_DATA',
@@ -55,6 +64,8 @@ export const appendTracks = (ownerId, playlistId) => (dispatch, getState) => {
         dispatch(getAudioFeaturesForTrack(track.id))
       })
     })
+  } else {
+    dispatch(notify({ message: 'No More Tracks to Add!', position: 'tc', status: 'error' }))
   }
 }
 
@@ -116,6 +127,27 @@ export const getActiveUser = () => (dispatch, getState) => {
     dispatch(notify({ message: 'Succesfully Logged in', position: 'tc', status: 'success' }))
     dispatch(setActiveUser(res.value.data.body))
   }).catch(err => {
-    dispatch(notify({ message: 'Error Logging In!', position: 'tc', status: 'error' }))
+    dispatch(notify({ message: 'Please Login!', position: 'tc', status: 'warning' }))
   })
+}
+
+export const removeActiveUser = () => (dispatch, getState) => {
+  dispatch({
+    type: 'REMOVE_ACTIVE_USER',
+    data: false,
+  })
+}
+
+
+export const resetTracks = () => (dispatch, getState) => {
+  dispatch({
+    type: 'REMOVE_TRACKS',
+    data: [],
+  })
+
+  dispatch({
+    type: 'SET_TRACKS_META_DATA',
+    data: null,
+  })
+
 }

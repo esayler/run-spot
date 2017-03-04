@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import { setActiveUser, getActiveUser } from '../actions'
+import { setActiveUser, getActiveUser, removeActiveUser } from '../actions'
 import Header from '../components/header'
 
 const mapStateToProps = (state) => {
@@ -13,6 +13,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     getActiveUser: () => {
       dispatch(getActiveUser())
+    },
+    removeActiveUser: () => {
+      dispatch(removeActiveUser())
     },
   }
 }

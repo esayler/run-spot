@@ -44,6 +44,8 @@ const customPlaylist = (state = { tracks: [] }, action) => {
     case 'SORT_CUSTOM_TRACKS_ASC':
       const newAscTrackOrder = _.sortBy(action.tracks, [track => track.tempo])
       return Object.assign(state, { tracks: newAscTrackOrder, sortDirection: 'asc' })
+    case 'REMOVE_TRACKS':
+      return []
     default:
       return state
   }

@@ -6,6 +6,7 @@ import customPlaylist from './customPlaylist'
 import audioFeatures from './audioFeatures'
 import user from './userReducer'
 import playlistsMetaData from './playlistsMetaData'
+import tracksMetaData from './tracksMetaData'
 import { loadingBarReducer } from 'react-redux-loading-bar'
 import { reducer as notificationsReducer } from 'reapop'
 
@@ -19,6 +20,7 @@ const rootReducer = combineReducers({
   audioFeatures,
   customPlaylist,
   playlistsMetaData,
+  tracksMetaData,
 })
 
 export default rootReducer

@@ -127,6 +127,7 @@ app.get('/api/account', checkAuth, (req, res) => {
 
 app.use('/api/auth/spotify',
   passport.authenticate('spotify', {
+    session: false,
     scope: [
       'user-read-email',
       'playlist-modify-private',
@@ -147,13 +148,14 @@ app.get('/api/callback',
 
 app.get('/api/logout', (req, res) => {
   req.logout()
-  res.send('you successfully logged out')
+  spotifyApi.resetAccessToken();
+  spotifyApi.resetRefreshToken();
+  res.redirect(`http://localhost:8000/playlists`)
 })
 
 app.listen(3000, () => {
   console.log(chalk.green(`Express is running, listening on port 3000`))
 })
-
 
 app.post('/api/create', (req, res) => {
   const uris = req.body.uris

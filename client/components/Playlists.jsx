@@ -1,5 +1,4 @@
 import React from 'react'
-import axios from 'axios'
 import { Column, Table } from 'react-virtualized'
 import PlaylistsTable from './PlaylistsTable'
 
@@ -20,15 +19,17 @@ export default class Playlists extends React.Component {
   render() {
     const { playlists } = this.props
 
-    if (playlists) {
+    if (!this.props.user) {
+      return (<h4>Please Login with Spotify to View your Playlists</h4>)
+    } else {
       return (
         <div>
-          <button className='button' onClick={() => this.handleClick()}>Get more Playlists</button>
+          <p>Click on a playlist name to add it's first 50 tracks to the tracklist</p>
+          <p>Click 'Get More Playlists' to add retrieve 50 more personal playlists</p>
+          <button className='button' onClick={() => this.handleClick()}>Get More Playlists</button>
           <PlaylistsTable className='playlists-table' data={playlists} />
         </div>
       )
-    } else {
-      return (<div>No Playlists to Display!</div>)
     }
   }
 }
