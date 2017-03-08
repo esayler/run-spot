@@ -1,10 +1,11 @@
 import React, { Component, PropTypes } from 'react'
 import sematable, { Table } from 'sematable'
 import PlayListsTableActions from './PlaylistsTableActions'
+import PlaylistLink from './PlaylistLink'
 
 const columns = [
   { key: 'id', header: 'ID', sortable: false, searchable: false, primaryKey: true, hidden: true },
-  { header: 'Playlists', sortable: true, searchable: false, sortable: true, Component: PlayListsTableActions },
+  { header: 'Playlists', sortable: true, searchable: false, sortable: true, Component: PlaylistLink },
   { key: 'name', header: 'Playlist', searchable: true, hidden: true },
   { key: 'owner', header: 'Owner', sortable: true, searchable: true },
   { key: 'total', header: '# of Tracks', sortable: true, searchable: false },

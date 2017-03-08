@@ -1,5 +1,4 @@
 import React from 'react'
-import { Column, Table } from 'react-virtualized'
 import PlaylistsTable from './PlaylistsTable'
 
 export default class Playlists extends React.Component {
@@ -24,9 +23,15 @@ export default class Playlists extends React.Component {
     } else {
       return (
         <div>
-          <p>Click on a playlist name to add it's first 50 tracks to the tracklist</p>
-          <p>Click 'Get More Playlists' to add retrieve 50 more personal playlists</p>
-          <button className='button' onClick={() => this.handleClick()}>Get More Playlists</button>
+          <div className='content-top'>
+            <div className='button-group'>
+              <button className='button' onClick={() => this.handleClick()}>Get More Playlists</button>
+            </div>
+            <div>
+              <p>Click on a playlist name to add it's first 50 tracks to the tracklist</p>
+              <p>Click 'Get More Playlists' to add retrieve 50 more personal playlists</p>
+            </div>
+          </div>
           <PlaylistsTable className='playlists-table' data={playlists} />
         </div>
       )

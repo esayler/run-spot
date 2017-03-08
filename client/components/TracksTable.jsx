@@ -7,7 +7,11 @@ const columns = [
   { key: 'name', header: 'Track Name', sortable: true, searchable: true, filterable: true },
   { key: 'artist', header: 'Artist', sortable: true, searchable: true, filterable: true },
   { key: 'album', header: 'Album', sortable: true, searchable: true, filterable: true },
+  { key: 'playlistName', header: 'Playlist', sortable: true, searchable: true, filterable: true },
+  { key: 'userId', header: 'Playlist Owner', sortable: true, searchable: true, filterable: true },
   { key: 'tempo', header: 'BPM', sortable: true, searchable: true, filterable: true },
+  // { key: 'playlistId', header: 'Playlist ID', sortable: true, searchable: true, filterable: true },
+
 ]
 
 const propTypes = {
@@ -21,7 +25,7 @@ class TracksTable extends Component {
     return (
       <Table
         {...this.props}
-        selectable
+        // selectable
         className='table-inverse table-hover table-sm'
         columns={columns}
       />

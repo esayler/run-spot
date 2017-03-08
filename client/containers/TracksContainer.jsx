@@ -13,7 +13,7 @@ const mapStateToProps = (state) => {
   const selectors = makeSelectors('PlaylistTracks')
 
   return {
-    activePlaylist: state.playlists.activePlaylist,
+    // activePlaylist: state.activePlaylist,
     tracks: state.tracks,
     sortInfo: selectors.getSortInfo(state),
   }

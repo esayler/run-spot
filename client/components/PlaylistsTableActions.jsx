@@ -1,19 +1,16 @@
 import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router-dom'
+import PlaylistLink from './PlaylistLink'
+
 
 const propTypes = {
   row: PropTypes.object.isRequired,
 }
 
 class PlaylistsTableActions extends Component {
+  // const  = this.props
   render() {
-    // console.log('PlaylistTableActions Props ', this.props)
-    const row = this.props.row
-    return (
-      <Link className='playlist-link' to={`/tracks/${row.owner}/${row.id}`}>
-        {this.props.row.name}
-      </Link>
-    )
+    return (<PlaylistLink {...this.props} />)
   }
 }
 

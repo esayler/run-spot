@@ -202,3 +202,9 @@ a {
   display: inline-block;
   margin-right: 20px;
 }
+
+.button-group {
+  display: flex;
+  align-content: flex-start;
+  flex-direction: row;
+}

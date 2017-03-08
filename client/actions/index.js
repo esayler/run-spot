@@ -10,7 +10,6 @@ export const appendPlaylists = () => (dispatch, getState) => {
     data: null,
   })
 
-
   let dispatchLimit = 50
   let dispatchOffset = playlistsMetaData ? playlistsMetaData.offset + dispatchLimit : 0
   if (!playlistsMetaData || (playlistsMetaData.offset + playlistsMetaData.limit < playlistsMetaData.total)) {
@@ -51,7 +50,10 @@ export const appendTracks = (ownerId, playlistId) => (dispatch, getState) => {
           data: meta,
         })
 
+        const { activePlaylist } = getState()
+
         const data = res.data.items.map(({track}) => Object.assign({}, {
+          ...activePlaylist,
           id: track.id,
           album: track.album.name,
           artist: track.artists[0].name,
@@ -65,7 +67,11 @@ export const appendTracks = (ownerId, playlistId) => (dispatch, getState) => {
       })
     })
   } else {
-    dispatch(notify({ message: 'No More Tracks to Add!', position: 'tc', status: 'error' }))
+    if (!ownerId || !playlistId) {
+      dispatch(notify({ message: 'No Playlist Selected to Add Tracks From!', position: 'tc', status: 'warning' }))
+    } else {
+      dispatch(notify({ message: 'No More Tracks to Add!', position: 'tc', status: 'error' }))
+    }
   }
 }
 
@@ -87,10 +93,13 @@ export const setActiveUser = (data) => {
   }
 }
 
-export const setActivePlaylist = (data) => {
+export const setActivePlaylist = (playlistName, playlistId, userId, total) => {
   return {
     type: 'SET_ACTIVE_PLAYLIST',
-    data,
+    playlistName,
+    playlistId,
+    userId,
+    total,
   }
 }
 
@@ -138,7 +147,6 @@ export const removeActiveUser = () => (dispatch, getState) => {
   })
 }
 
-
 export const resetTracks = () => (dispatch, getState) => {
   dispatch({
     type: 'REMOVE_TRACKS',
@@ -146,8 +154,11 @@ export const resetTracks = () => (dispatch, getState) => {
   })
 
   dispatch({
+    type: 'REMOVE_CUSTOM_TRACKS',
+  })
+
+  dispatch({
     type: 'SET_TRACKS_META_DATA',
     data: null,
   })
-
 }
