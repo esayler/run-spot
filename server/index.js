@@ -157,6 +157,53 @@ app.listen(3000, () => {
   console.log(chalk.green(`Express is running, listening on port 3000`))
 })
 
+app.post('/api/new', (req, res) => {
+  const name = req.body.name
+  fetch(`https://api.spotify.com/v1/users/${req.user.id}/playlists`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + spotifyApi.getAccessToken(),
+    },
+    body: JSON.stringify({
+      name,
+      public: false,
+      collaborative: false,
+    }),
+  }).then(checkStatus)
+    .then(parseJSON)
+    .then(response => {
+      console.log(chalk.green('new response: ', util.inspect(response)))
+      res.json(response)
+    }).catch(err => {
+      console.log(chalk.red('new response: ', util.inspect(err)))
+      res.json(err)
+    })
+})
+
+app.post('/api/add', (req, res) => {
+  const href = req.body.href
+  const uris = req.body.uris
+  fetch(`${href}/tracks`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + spotifyApi.getAccessToken(),
+    },
+    body: JSON.stringify({
+      uris,
+    }),
+  }).then(checkStatus)
+    .then(parseJSON)
+    .then(response => {
+      console.log(chalk.green('new response: ', util.inspect(response)))
+      res.json(response)
+    }).catch(err => {
+      console.log(chalk.red('new response: ', util.inspect(err)))
+      res.json(err)
+    })
+})
+
 app.post('/api/create', (req, res) => {
   const uris = req.body.uris
   fetch(`https://api.spotify.com/v1/users/${req.user.id}/playlists`, {
@@ -173,7 +220,7 @@ app.post('/api/create', (req, res) => {
   }).then(checkStatus)
     .then(parseJSON)
     .then(response => {
-      console.log(chalk.green('createNewPlaylist response: ', util.inspect(response)))
+      // console.log(chalk.green('createNewPlaylist response: ', util.inspect(response)))
       fetch(`${response.href}/tracks`, {
         method: 'POST',
         headers: {
@@ -185,7 +232,7 @@ app.post('/api/create', (req, res) => {
         }),
       }).then(checkStatus)
         .then(response => {
-          console.log(chalk.green('add tracks res: ', util.inspect(response)))
+          // console.log(chalk.green('add tracks res: ', util.inspect(response)))
           res.status(200).json(response)
         })
         .catch(err => {
@@ -195,7 +242,7 @@ app.post('/api/create', (req, res) => {
       // res.status(payload.status).send(payload)
     })
     .catch(err => {
-      console.log(chalk.red('outside fetch error: ', util.inspect(err)))
+      // console.log(chalk.red('outside fetch error: ', util.inspect(err)))
       res.status(500).json(err)
       // res.status(err.status).send(err)
     })

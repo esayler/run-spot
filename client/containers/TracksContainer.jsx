@@ -27,8 +27,8 @@ const mapDispatchToProps = (dispatch) => {
     appendTracks: (ownerId, playlistId) => {
       dispatch(appendTracks(ownerId, playlistId))
     },
-    createNewPlaylist: () => {
-      dispatch(createNewPlaylist())
+    createNewPlaylist: (playlistName) => {
+      dispatch(createNewPlaylist(playlistName))
     },
     resetTracks: () => {
       dispatch(resetTracks())

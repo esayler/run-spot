@@ -1,5 +1,6 @@
 import axios from 'axios'
 import {addNotification as notify} from 'reapop'
+import _ from 'lodash'
 
 export const appendPlaylists = () => (dispatch, getState) => {
   const { playlists } = getState()
@@ -103,18 +104,52 @@ export const setActivePlaylist = (playlistName, playlistId, userId, total) => {
   }
 }
 
-export const createNewPlaylist = () => (dispatch, getState) => {
+export const createNewPlaylist = (playlistName) => (dispatch, getState) => {
   const { customPlaylist } = getState()
+  const name = playlistName || 'New Custom Playlist'
   const trackIds = customPlaylist.tracks.map(track => 'spotify:track:' + track.id)
+  let trackArrays = []
+
+  // split the custom playlist into 50-track chunks
+  for (let i = 0; i < trackIds.length; i += 50) {
+    trackArrays.push(trackIds.slice(i, i + 50))
+  }
+
+  // reverse the array of arrays so spotify adds the first tracks last
+  // (to the top of the playlist) (preserves order)
+  trackArrays.reverse()
+
   dispatch({
     type: 'CREATE_NEW_PLAYLIST',
-    payload: axios.post(`http://localhost:8000/api/create/`, {
-      uris: trackIds,
-    }).then(res => {
-      dispatch(notify({ message: 'Successfully Created New Playlist!', position: 'tc', status: 'success' }))
-    }).catch(err => {
-      dispatch(notify({ message: 'Problem Creating Playlist', position: 'tc', status: 'error' }))
-    }),
+    payload: axios.post(`http://localhost:8000/api/new/`, { name })
+      .then(res => {
+        console.log('createNewPlaylist api/new/ POST -- res:', res)
+        dispatch(notify({
+          allowHTML: true,
+          closeButton: true,
+          dismissAfter: 10000,
+          message: `Succesfully Created New Playlist: <a href="${res.data.external_urls.spotify}" target="_blank">${res.data.name}</a>`,
+          position: 'tc',
+          status: res.status }))
+
+        trackArrays.map(trackIds => {
+          axios.post(`http://localhost:8000/api/add/`, {
+            href: res.data.href,
+            uris: trackIds,
+          })
+          .then(res => {
+            console.log('createNewPlaylist api/add/ POST -- res:', res)
+            dispatch(notify({ message: 'Successfully Added Tracks to Playlist', position: 'bc', status: 'success' }))
+          })
+          .catch(err => {
+            dispatch(notify({ title: 'Problem Adding Tracks To Playlist', message: err, position: 'tc', status: 'error' }))
+          })
+        })
+      })
+      .catch(err => {
+        console.log('createNewPlaylist api/new/ POST -- err: ', err)
+        dispatch(notify({ title: 'Problem Creating Playlist', message: err, position: 'tc', status: 'error' }))
+      }),
   })
 }
 
