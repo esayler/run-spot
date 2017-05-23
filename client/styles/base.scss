@@ -3,7 +3,7 @@
 @font-face {
     font-family: 'Circular';
     src: url('../fonts/circular-light.woff2') format('woff2'), url('../fonts/circular-light.woff') format('woff');
-    font-weight: 300;
+    font-weight: 200;
     font-style: normal
 }
 
@@ -38,8 +38,8 @@ html {
 }
 
 body {
-  font-family: 'Circular', 'Helvetica Neue', 'Arial', sans-serif;
-  font-weight: 300;
+  font-family: 'Circular', sans-serif;
+  font-weight: 200;
   font-size: 1em;
   margin-top: 0;
 }
@@ -55,14 +55,16 @@ body {
 }
 
 a {
-  margin: 20px;
-  // margin-bottom: 20px;
+  margin: 10px;
   // font-weight: normal;
   color: $link-color;
 
-  &:hover,
-  &:active {
+  &:hover {
     color: $link-hover-color;
+
+    &:active {
+      color: $link-active-click-color;
+    }
   }
 }
 
@@ -70,28 +72,32 @@ a {
 
 .title {
   display: inline-block;
+  // font-size: 36px;
+
   color: $link-color;
   text-decoration: none;
 
   h1 {
-    font-weight: 400;
-    letter-spacing: 1.2px;
-    font-size: 2.5em;
+    font-weight: 200;
   }
 
-  &:hover,
-  &:active {
+  &:hover {
     color: $link-hover-color;
+
+    &:active {
+      color: $link-active-click-color;
+    }
   }
 }
 
 .header {
 
-  margin: 0 auto;
+  margin: 10px auto;
   height: 70px;
 
   border-bottom: 1px solid $green;
   margin-bottom: 0;
+  // text-align: center;
   background: $black;
   z-index: 1;
     a {
@@ -103,6 +109,8 @@ a {
   margin-bottom: 20px;
 }
 
+
+
 .loading-bar {
   margin-top: 0;
   background-color: $green;
@@ -112,41 +120,32 @@ a {
 
 .navigation {
   display: inline-block;
-  vertical-align: baseline;
+  margin-top: 10px;
+  margin-right: 0px;
   float: right;
   font-size: 1.5em;
 }
+
+
 
 .playlists-table-container {
   background: $black;
 }
 
-.button {
-  font-family: 'Circular', 'Helvetica Neue', 'Arial', sans-serif;
+.button, .create-new-playlist-btn {
   margin: 20px auto;
   background-color: $green;
-  text-transform: uppercase;
-  letter-spacing: 1.2px;
-  font-size: 16px;
-  font-weight: 600;
+  font-weight: 400;
+  font-size: 20px;
   color: $white;
-  padding: 0 40px;
-  padding-top: 14px;
-  padding-bottom: 12px;
+  padding: 6px 60px;
   border: 1px solid $black;
   border-radius: 30px;
-
     &:hover {
-      background: lighten($green, 5%);
-      color: $white;
-      transform: scale(1.1);
-
-      &:active {
-        background: darken($green, 5%);
-        color: $white;
-      }
+      background: $black;
+      color: $green;
+      border: 1px solid $green;
     }
-
 }
 
 
@@ -172,11 +171,21 @@ a {
 }
 
 a {
-  &.btn-login, &.btn-logout {
-    margin-top: 10px;
-    margin-left: 20px;
-  }
+  &.btn-login {
+    font-size: 20px;
+    background-color: $green;
+    color: $white;
+    padding: 6px 60px;
+    border: 1px solid $black;
+    border-radius: 30px;
+    margin-top: 0;
 
+    &:hover {
+      background: $black;
+      color: $green;
+      border: 1px solid $green;
+    }
+  }
 }
 
 .user-profile-display {
@@ -192,72 +201,4 @@ a {
 .user-profile-id {
   display: inline-block;
   margin-right: 20px;
-}
-
-.button-group {
-  display: flex;
-  align-content: flex-start;
-  flex-direction: row;
-  flex-wrap: wrap-reverse;
-}
-
-.note {
-  color: $white;
-  text-align: center;
-}
-
-.playlists-title {
-  color: $white;
-}
-
-.clear-tracks-btn {
-  background-color: #c0392b;
-
-  &:hover {
-    background-color: #e74c3c;
-    &:active {
-      background-color: darken(#c0392b, 5%);
-    }
-  }
-}
-
-.clear-tracks-btn {
-  background-color: #c0392b;
-
-  &:hover {
-    background-color: #e74c3c;
-    &:active {
-      background-color: darken(#c0392b, 5%);
-    }
-  }
-}
-
-.add-tracks-btn,
-.add-playlists-btn {
-  background-color: #2980b9;
-
-  &:hover {
-    background-color: #3498db;
-    &:active {
-      background-color: darken(#2980b9, 5%);
-    }
-  }
-
-  &:disabled {
-    background-color: $light-grey;
-    color: $white;
-    transform: none;
-    // display: none;
-  }
-}
-
-.create-new-playlist-btn {
-  background-color: #16a085;
-
-  &:hover {
-    background-color: #1abc9c;
-    &:active {
-      background-color: darken(#16a085, 5%);
-    }
-  }
 }

@@ -13,9 +13,8 @@ const customPlaylist = (state = { tracks: [] }, action) => {
         return state
       }
     case 'APPEND_TRACKS_FULFILLED':
-      return Object.assign(state, { tracks: state.tracks.concat(action.payload.data) })
+      return Object.assign(state, { tracks: action.payload.data })
     case 'ADD_AUDIO_FEATURES_FULFILLED':
-      console.log('append tracks fufilled custom playlist')
       const newState = state.tracks.map(track => {
         if (track.id === action.payload.id) {
           return {
@@ -40,15 +39,13 @@ const customPlaylist = (state = { tracks: [] }, action) => {
         return Object.assign(state, { tracks: newTrackOrder, sortDirection: 'asc' })
       }
     case 'SORT_CUSTOM_TRACKS_DESC':
-      const newDescTrackOrder = _.reverse(_.sortBy(state.tracks, [track => track.tempo]))
-      return Object.assign({}, state, { tracks: newDescTrackOrder, sortDirection: 'desc' })
+      const newDescTrackOrder = _.reverse(_.sortBy(action.tracks, [track => track.tempo]))
+      return Object.assign(state, { tracks: newDescTrackOrder, sortDirection: 'desc' })
     case 'SORT_CUSTOM_TRACKS_ASC':
-      const newAscTrackOrder = _.sortBy(state.tracks, [track => track.tempo])
-      return Object.assign({}, state, { tracks: newAscTrackOrder, sortDirection: 'asc' })
-    case 'REMOVE_CUSTOM_TRACKS':
-      return {
-        tracks: [],
-      }
+      const newAscTrackOrder = _.sortBy(action.tracks, [track => track.tempo])
+      return Object.assign(state, { tracks: newAscTrackOrder, sortDirection: 'asc' })
+    case 'REMOVE_TRACKS':
+      return []
     default:
       return state
   }

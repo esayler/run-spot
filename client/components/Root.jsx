@@ -31,8 +31,8 @@ export default class Root extends React.Component {
               <Route exact path='/' component={Home} />
               <Route path='/about' component={About} />
               <Route path='/playlists' component={PlaylistsContainer} />
-              <Route path='/tracks/:ownerId?/:playlistId?' component={TracksContainer} />
-              {/* <Route path='/tracks/' component={TracksContainer} /> */}
+              <Route path='/tracks/:ownerId/:playlistId' component={TracksContainer} />
+              <Route path='/tracks/' component={TracksContainer} />
             </div>
           </div>
         </Router>

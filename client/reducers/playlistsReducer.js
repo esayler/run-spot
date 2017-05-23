@@ -6,6 +6,8 @@ const playlists = (state = { data: [] }, action) => {
       return Object.assign({}, { data: state.data.concat(action.payload.data), meta: action.payload.meta })
     case 'APPEND_PLAYLISTS_REJECTED':
       return state
+    case 'SET_ACTIVE_PLAYLIST':
+      return state
     default:
       return state
   }

@@ -8,9 +8,12 @@ import morgan from 'morgan'
 import cors from 'cors'
 import fetch from 'isomorphic-fetch'
 import bodyParser from 'body-parser'
+import axios from 'axios'
+// const api = require('./api')
 
 import webpack from 'webpack'
 import WebpackDevServer from 'webpack-dev-server'
+import historyApiFallback from 'connect-history-api-fallback'
 import webpackConfig from '../webpack.config.js'
 const { resolve } = require('path')
 
@@ -74,6 +77,8 @@ app.use(passport.initialize())
 app.use(passport.session())
 app.use(morgan('dev'))
 
+// app.use('/api', api)
+
 app.get('/api/me', (req, res) => {
   spotifyApi.getMe()
     .then(function (data) {
@@ -99,41 +104,10 @@ app.get('/api/tracks/:userId/:playlistId/:offset/:limit', (req, res) => {
   )
 })
 
-app.get('/api/get_playlists', (req, res) => {
-  fetch(`https://api.spotify.com/v1/me/playlists?offset=${req.query.offset}&limit=${req.query.limit}`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + spotifyApi.getAccessToken(),
-    },
-  }).then(checkStatus)
-    .then(parseJSON)
-    .then(response => {
-      console.log(chalk.green('new response: ', util.inspect(response)))
-      res.json(response)
-    }).catch(err => {
-      console.log(chalk.red('new response: ', util.inspect(err)))
-      res.json(err)
-    })
-})
-
-// app.get('/api/get_playlists', (req, res) => {
-//   fetch(`https://api.spotify.com/v1/me/playlists?offset=${req.query.offset}&limit=${req.query.limit}`, {
-//     method: 'GET',
-//     headers: {
-//       'Content-Type': 'application/json',
-//       'Authorization': 'Bearer ' + spotifyApi.getAccessToken(),
-//     },
-//   }).then(checkStatus)
-//     .then(parseJSON)
-//     .then(response => {
-//       console.log(chalk.green('new response: ', util.inspect(response)))
-//       res.json(response)
-//     }).catch(err => {
-//       console.log(chalk.red('new response: ', util.inspect(err)))
-//       res.json(err)
-//     })
-// })
+app.get('/api/playlists/:offset/:limit', (req, res) => spotifyApi.getUserPlaylists(req.user.id, { 'offset': req.params.offset, 'limit': req.params.limit })
+  .then(data => res.json(data.body),
+    err => console.log('Something went wrong!', util.inspect(err))
+))
 
 app.get('/api/audiofeatures/:trackId', (req, res) => spotifyApi.getAudioFeaturesForTrack(req.params.trackId)
   .then(data => res.json(data.body),
@@ -174,8 +148,8 @@ app.get('/api/callback',
 
 app.get('/api/logout', (req, res) => {
   req.logout()
-  spotifyApi.resetAccessToken()
-  spotifyApi.resetRefreshToken()
+  spotifyApi.resetAccessToken();
+  spotifyApi.resetRefreshToken();
   res.redirect(`http://localhost:8000/playlists`)
 })
 
@@ -183,8 +157,8 @@ app.listen(3000, () => {
   console.log(chalk.green(`Express is running, listening on port 3000`))
 })
 
-app.post('/api/new', (req, res) => {
-  const name = req.body.name
+app.post('/api/create', (req, res) => {
+  const uris = req.body.uris
   fetch(`https://api.spotify.com/v1/users/${req.user.id}/playlists`, {
     method: 'POST',
     headers: {
@@ -192,41 +166,38 @@ app.post('/api/new', (req, res) => {
       'Authorization': 'Bearer ' + spotifyApi.getAccessToken(),
     },
     body: JSON.stringify({
-      name,
+      name: 'My Awesome Playlist',
       public: false,
       collaborative: false,
     }),
   }).then(checkStatus)
     .then(parseJSON)
     .then(response => {
-      console.log(chalk.green('new response: ', util.inspect(response)))
-      res.json(response)
-    }).catch(err => {
-      console.log(chalk.red('new response: ', util.inspect(err)))
-      res.json(err)
+      console.log(chalk.green('createNewPlaylist response: ', util.inspect(response)))
+      fetch(`${response.href}/tracks`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + spotifyApi.getAccessToken(),
+        },
+        body: JSON.stringify({
+          uris,
+        }),
+      }).then(checkStatus)
+        .then(response => {
+          console.log(chalk.green('add tracks res: ', util.inspect(response)))
+          res.status(200).json(response)
+        })
+        .catch(err => {
+          console.log(chalk.red('inside fetch error: ', util.inspect(err)))
+          res.status(500).json(err)
+        })
+      // res.status(payload.status).send(payload)
     })
-})
-
-app.post('/api/add', (req, res) => {
-  const href = req.body.href
-  const uris = req.body.uris
-  fetch(`${href}/tracks`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer ' + spotifyApi.getAccessToken(),
-    },
-    body: JSON.stringify({
-      uris,
-    }),
-  }).then(checkStatus)
-    .then(parseJSON)
-    .then(response => {
-      console.log(chalk.green('add response: ', util.inspect(response)))
-      res.json(response)
-    }).catch(err => {
-      console.log(chalk.red('add response: ', util.inspect(err)))
-      res.status(err.response.status).json(err.response)
+    .catch(err => {
+      console.log(chalk.red('outside fetch error: ', util.inspect(err)))
+      res.status(500).json(err)
+      // res.status(err.status).send(err)
     })
 })
 

@@ -1,11 +1,11 @@
 {
-  "name": "run-spot",
+  "name": "react-boilerplate",
   "version": "1.1.0",
-  "description": "organize your spotify playlists by bpm",
+  "description": "a boilerplate React.js App using Webpack 2, React Router 4, Standard.js linter, and testing with Karma and Mocha/Chai",
   "main": "./src/index.jsx",
   "scripts": {
     "start": "webpack-dev-server --progress --history-api-fallback",
-    "serve": "nodemon server/index.js --exec babel-node --presets latest --ignore client/",
+    "serve": "nodemon server/index.js --exec babel-node --presets latest",
     "build": "webpack --progress",
     "watch": "webpack --progress --watch",
     "lint": "standard",
@@ -70,7 +70,6 @@
   },
   "dependencies": {
     "axios": "^0.15.3",
-    "bluebird": "^3.5.0",
     "body-parser": "^1.16.1",
     "bootstrap": "4.0.0-alpha.6",
     "chalk": "^1.1.3",
