@@ -3,7 +3,13 @@ const playlists = (state = { data: [] }, action) => {
     case 'APPEND_PLAYLISTS_PENDING':
       return state
     case 'APPEND_PLAYLISTS_FULFILLED':
-      return Object.assign({}, { data: state.data.concat(action.payload.data), meta: action.payload.meta })
+      return Object.assign(
+        {},
+        {
+          data: state.data.concat(action.payload.data),
+          meta: action.payload.meta,
+        }
+      )
     case 'APPEND_PLAYLISTS_REJECTED':
       return state
     default:
@@ -12,3 +18,4 @@ const playlists = (state = { data: [] }, action) => {
 }
 
 export default playlists
+

@@ -81,7 +81,6 @@ app.use(session({ secret: 'keyboard cat' }))
 app.use(passport.initialize())
 app.use(passport.session())
 
-
 app.get('/api/me', (req, res) => {
   spotifyApi.getMe().then(
     data => {
@@ -182,7 +181,7 @@ app.get(
   '/api/callback',
   passport.authenticate('spotify', { failureRedirect: '/fail' }),
   (req, res) => {
-    res.redirect(`http://localhost:8000/playlists`)
+    res.redirect(`/playlists`)
   }
 )
 
@@ -190,7 +189,7 @@ app.get('/api/logout', (req, res) => {
   req.logout()
   spotifyApi.resetAccessToken()
   spotifyApi.resetRefreshToken()
-  res.redirect(`http://localhost:8000/playlists`)
+  res.redirect(`/playlists`)
 })
 
 app.post('/api/new', (req, res) => {

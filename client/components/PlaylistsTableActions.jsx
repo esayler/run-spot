@@ -8,7 +8,6 @@ const propTypes = {
 }
 
 class PlaylistsTableActions extends Component {
-  // const  = this.props
   render() {
     return (<PlaylistLink {...this.props} />)
   }

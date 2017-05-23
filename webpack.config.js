@@ -9,7 +9,7 @@ module.exports = {
       resolve(__dirname, 'client/index.jsx'),
       'webpack-dev-server/client?http://localhost:8000',
       'webpack/hot/only-dev-server',
-    ]
+    ],
   },
   devtool: 'eval-source-map',
   devServer: {
@@ -31,7 +31,6 @@ module.exports = {
     chunks: false,
   },
   externals: {
-    // 'cheerio': 'window',
     'react/addons': 'react',
     'jsdom': 'window',
     'react/lib/ExecutionEnvironment': 'react',
@@ -49,7 +48,6 @@ module.exports = {
         use: [
           { loader: 'style-loader' },
           { loader: 'css-loader' },
-          // { loader: 'sass-loader', options: { sourceMap: false } },
         ],
       },
       {

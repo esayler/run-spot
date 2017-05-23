@@ -16,7 +16,7 @@ export const appendPlaylists = () => (dispatch, getState) => {
     dispatch({
       type: 'APPEND_PLAYLISTS',
       payload: fetch(
-        `http://localhost:8000/api/get_playlists?offset=${dispatchOffset}&limit=${dispatchLimit}`
+        `/api/get_playlists?offset=${dispatchOffset}&limit=${dispatchLimit}`
       )
         .then(res => res.json())
         .then(payload => {
@@ -70,7 +70,7 @@ export const appendTracks = (ownerId, playlistId) => (dispatch, getState) => {
       type: 'APPEND_TRACKS',
       payload: axios
         .get(
-          `http://localhost:8000/api/tracks/${ownerId}/${playlistId}/${dispatchOffset}/${dispatchLimit}`
+          `/api/tracks/${ownerId}/${playlistId}/${dispatchOffset}/${dispatchLimit}`
         )
         .then(res => {
           const meta = {
@@ -141,7 +141,7 @@ export const getAudioFeaturesForTrack = trackId => (dispatch, getState) => {
   return dispatch({
     type: 'ADD_AUDIO_FEATURES',
     payload: axios
-      .get(`http://localhost:8000/api/audiofeatures/${trackId}`)
+      .get(`/api/audiofeatures/${trackId}`)
       .then(res => {
         return res.data
       })
@@ -203,7 +203,7 @@ export const createNewPlaylist = playlistName => (dispatch, getState) => {
   dispatch({
     type: 'CREATE_NEW_PLAYLIST',
     payload: axios
-      .post(`http://localhost:8000/api/new/`, { name })
+      .post(`/api/new/`, { name })
       .then(res => {
         dispatch(
           notify({
@@ -218,7 +218,7 @@ export const createNewPlaylist = playlistName => (dispatch, getState) => {
 
         Promise.mapSeries(trackArrays, trackIds => {
           axios
-            .post(`http://localhost:8000/api/add/`, {
+            .post(`/api/add/`, {
               href: res.data.href,
               uris: trackIds,
             })
@@ -271,7 +271,7 @@ export const sortCustomTracksAsc = () => (dispatch, getState) => {
 export const getActiveUser = () => (dispatch, getState) => {
   dispatch({
     type: 'GET_ACTIVE_USER',
-    payload: axios.get('http://localhost:8000/api/me/'),
+    payload: axios.get('/api/me/'),
   })
     .then(res => {
       dispatch(

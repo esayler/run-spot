@@ -30,7 +30,6 @@ yarn
 yarn serve
 ```
 - then navigate to [http://localhost:8000/](http://localhost:8000/)
-- saved changes should rebuild and be hot swapped - no need to refresh browser
 
 ### to start the test runner
 ```shell

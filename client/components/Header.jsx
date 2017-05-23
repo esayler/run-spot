@@ -1,11 +1,8 @@
 import React from 'react'
-import axios from 'axios'
-import { Column, Table } from 'react-virtualized'
-import { BrowserRouter as Router, Route, Link, BrowserHistory } from 'react-router-dom'
+import { Link, BrowserHistory } from 'react-router-dom'
 import LoadingBar from 'react-redux-loading-bar'
 
 export default class Header extends React.Component {
-
   handleLogin(e) {
     BrowserHistory.push('api/auth/spotify')
   }
@@ -21,21 +18,33 @@ export default class Header extends React.Component {
 
   render() {
     const user = this.props.activeUser
-      ? (<div className='user-profile-display'>
+      ? <div className='user-profile-display'>
         <div className='user-profile-id'>{this.props.activeUser.id}</div>
-          <Link onClick={this.handleLogout.bind(this)} to='/api/logout' className='btn button btn-logout'>Log Out</Link>
-        </div>)
-      : <Link onClick={this.handleLogin.bind(this)} to='/api/auth/spotify' className='btn button btn-login'>Login with Spotify</Link>
+        <Link
+          onClick={this.handleLogout.bind(this)}
+          to='/api/logout'
+          className='btn button btn-logout'
+          >
+            Log Out
+          </Link>
+      </div>
+      : <Link
+        onClick={this.handleLogin.bind(this)}
+        to='/api/auth/spotify'
+        className='btn button btn-login'
+        >
+          Login with Spotify
+        </Link>
 
     return (
       <div className='header-container'>
         <div className='header'>
           <div className='header-content'>
-            <Link to='/playlists' className='navbar-title title'><h1>rn.spt</h1></Link>
+            <Link to='/playlists' className='navbar-title title'>
+              <h1>rn.spt</h1>
+            </Link>
 
             <nav className='navigation'>
-              {/* <Link to='/'>Home</Link> */}
-              {/* <Link to='/about'>About</Link> */}
               <Link to='/playlists'>Playlists</Link>
               <Link to='/tracks'>Tracks</Link>
               {user}
