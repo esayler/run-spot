@@ -4,11 +4,11 @@ import TracksTableActions from './PlaylistsTableActions'
 
 const columns = [
   { key: 'id', header: 'id', sortable: false, searchable: false, filterable: false, primaryKey: true, hidden: true },
-  { key: 'name', header: 'Track Name', sortable: true, searchable: true, filterable: true },
-  { key: 'artist', header: 'Artist', sortable: true, searchable: true, filterable: true },
-  { key: 'album', header: 'Album', sortable: true, searchable: true, filterable: true },
-  { key: 'playlistName', header: 'Playlist', sortable: true, searchable: true, filterable: true },
-  { key: 'userId', header: 'Playlist Owner', sortable: true, searchable: true, filterable: true },
+  { key: 'name', header: 'Track Name', sortable: false, searchable: true, filterable: true },
+  { key: 'artist', header: 'Artist', sortable: false, searchable: true, filterable: true },
+  { key: 'album', header: 'Album', sortable: false, searchable: true, filterable: true },
+  { key: 'playlistName', header: 'Playlist', sortable: false, searchable: true, filterable: true },
+  { key: 'userId', header: 'Playlist Owner', sortable: false, searchable: true, filterable: true },
   { key: 'tempo', header: 'BPM', sortable: true, searchable: true, filterable: true },
   // { key: 'playlistId', header: 'Playlist ID', sortable: true, searchable: true, filterable: true },
 
@@ -34,4 +34,4 @@ class TracksTable extends Component {
 }
 
 TracksTable.propTypes = propTypes
-export default sematable('PlaylistTracks', TracksTable, columns, { defaultPageSize: 50 })
+export default sematable('PlaylistTracks', TracksTable, columns, { defaultPageSize: 50, sortKey: 'tempo', sortDirection: 'desc' })

@@ -1,33 +1,38 @@
 import axios from 'axios'
 import {addNotification as notify} from 'reapop'
-import _ from 'lodash'
+import fetch from 'isomorphic-fetch'
+var Promise = require('bluebird')
 
 export const appendPlaylists = () => (dispatch, getState) => {
-  const { playlists } = getState()
-  const { playlistsMetaData } = getState()
+  let { playlistsMetaData } = getState()
 
-  dispatch({
-    type: 'SET_TRACKS_META_DATA',
-    data: null,
-  })
+  const dispatchLimit = 50
+  const dispatchOffset = playlistsMetaData.offset + playlistsMetaData.limit
 
-  let dispatchLimit = 50
-  let dispatchOffset = playlistsMetaData ? playlistsMetaData.offset + dispatchLimit : 0
-  if (!playlistsMetaData || (playlistsMetaData.offset + playlistsMetaData.limit < playlistsMetaData.total)) {
-    return dispatch({
+  if (playlistsMetaData.next && playlistsMetaData.offset + playlistsMetaData.limit < playlistsMetaData.total) {
+    dispatch({
       type: 'APPEND_PLAYLISTS',
-      payload:
-          axios.get(`http://localhost:8000/api/playlists/${dispatchOffset}/${dispatchLimit}`)
-          .then(res => {
-            const meta = { next: res.data.next, offset: res.data.offset, limit: res.data.limit, total: res.data.total }
-            dispatch({
-              type: 'SET_PLAYLISTS_META_DATA',
-              data: meta,
-            })
-            const data = res.data.items.map((playlist) => Object.assign({}, { id: playlist.id, name: playlist.name, owner: playlist.owner.id, total: playlist.tracks.total }))
-            return Object.assign({}, {meta}, {data})
-          }
-        ),
+      payload: fetch(`http://localhost:8000/api/get_playlists?offset=${dispatchOffset}&limit=${dispatchLimit}`)
+                  .then(res => res.json())
+                  .then(payload => {
+                    const meta = {
+                      next: payload.next,
+                      offset: payload.offset,
+                      limit: payload.limit,
+                      total: payload.total,
+                    }
+                    dispatch({
+                      type: 'SET_PLAYLISTS_META_DATA',
+                      data: meta,
+                    })
+                    const data = payload.items.map((playlist) => Object.assign({}, {
+                      id: playlist.id,
+                      name: playlist.name,
+                      owner: playlist.owner.id,
+                      total: playlist.tracks.total,
+                    }))
+                    return Object.assign({}, {meta}, {data})
+                  }),
     })
   } else {
     dispatch(notify({ message: 'No More Playlists to Add!', position: 'tc', status: 'error' }))
@@ -45,7 +50,12 @@ export const appendTracks = (ownerId, playlistId) => (dispatch, getState) => {
       axios.get(`http://localhost:8000/api/tracks/${ownerId}/${playlistId}/${dispatchOffset}/${dispatchLimit}`)
       .then(res => {
         console.log('tracksResponse', res);
-        const meta = { next: res.data.next, offset: res.data.offset, limit: res.data.limit, total: res.data.total }
+        const meta = {
+          next: res.data.next,
+          offset: res.data.offset,
+          limit: res.data.limit,
+          total: res.data.total,
+        }
         dispatch({
           type: 'SET_TRACKS_META_DATA',
           data: meta,
@@ -58,14 +68,22 @@ export const appendTracks = (ownerId, playlistId) => (dispatch, getState) => {
           id: track.id,
           album: track.album.name,
           artist: track.artists[0].name,
-          name: track.name }))
-          return Object.assign({}, {data})
-        }
-      ),
+          name: track.name,
+        }))
+        return Object.assign({}, {data})
+      }),
     }).then(res => {
-      res.value.data.map(track => {
-        dispatch(getAudioFeaturesForTrack(track.id))
-      })
+      return Promise.all(res.value.data.map(track => {
+        return dispatch(getAudioFeaturesForTrack(track.id))
+      }))
+    }).then(res => {
+      const { customPlaylist } = getState()
+      if (customPlaylist.sortDirection === 'asc') {
+        dispatch(sortCustomTracksAsc())
+      } else {
+        dispatch(sortCustomTracksDesc())
+      }
+      console.log('get all Audio features .then res: ', res)
     })
   } else {
     if (!ownerId || !playlistId) {
@@ -94,14 +112,19 @@ export const setActiveUser = (data) => {
   }
 }
 
-export const setActivePlaylist = (playlistName, playlistId, userId, total) => {
-  return {
+export const setActivePlaylist = (playlistName, playlistId, userId, total) => (dispatch, getState) => {
+  dispatch({
+    type: 'SET_TRACKS_META_DATA',
+    data: null,
+  })
+
+  dispatch({
     type: 'SET_ACTIVE_PLAYLIST',
     playlistName,
     playlistId,
     userId,
     total,
-  }
+  })
 }
 
 export const createNewPlaylist = (playlistName) => (dispatch, getState) => {
@@ -132,7 +155,7 @@ export const createNewPlaylist = (playlistName) => (dispatch, getState) => {
           position: 'tc',
           status: res.status }))
 
-        trackArrays.map(trackIds => {
+        Promise.mapSeries(trackArrays, (trackIds) => {
           axios.post(`http://localhost:8000/api/add/`, {
             href: res.data.href,
             uris: trackIds,
@@ -142,7 +165,8 @@ export const createNewPlaylist = (playlistName) => (dispatch, getState) => {
             dispatch(notify({ message: 'Successfully Added Tracks to Playlist', position: 'bc', status: 'success' }))
           })
           .catch(err => {
-            dispatch(notify({ title: 'Problem Adding Tracks To Playlist', message: err, position: 'tc', status: 'error' }))
+            console.log(err)
+            dispatch(notify({ title: 'Problem Adding Tracks to Playlist!', message: '', position: 'tc', status: 'error' }))
           })
         })
       })
@@ -153,12 +177,19 @@ export const createNewPlaylist = (playlistName) => (dispatch, getState) => {
   })
 }
 
-export const sortTracksDesc = () => (dispatch, getState) => {
-  const { customPlaylist } = getState()
-  const { tracks } = customPlaylist
+export const sortCustomTracksDesc = () => (dispatch, getState) => {
+  // const { customPlaylist } = getState()
+  // const { tracks } = customPlaylist
   dispatch({
     type: 'SORT_CUSTOM_TRACKS_DESC',
-    tracks,
+  })
+}
+
+export const sortCustomTracksAsc = () => (dispatch, getState) => {
+  // const { customPlaylist } = getState()
+  // const { tracks } = customPlaylist
+  dispatch({
+    type: 'SORT_CUSTOM_TRACKS_ASC',
   })
 }
 

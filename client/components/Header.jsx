@@ -23,9 +23,9 @@ export default class Header extends React.Component {
     const user = this.props.activeUser
       ? (<div className='user-profile-display'>
         <div className='user-profile-id'>{this.props.activeUser.id}</div>
-          <Link onClick={this.handleLogout.bind(this)} to='/api/logout' className='button logout-button'>Log Out</Link>
+          <Link onClick={this.handleLogout.bind(this)} to='/api/logout' className='btn button btn-logout'>Log Out</Link>
         </div>)
-      : <Link onClick={this.handleLogin.bind(this)} to='/api/auth/spotify' className='btn btn-login'>Login with Spotify</Link>
+      : <Link onClick={this.handleLogin.bind(this)} to='/api/auth/spotify' className='btn button btn-login'>Login with Spotify</Link>
 
     return (
       <div className='header-container'>
@@ -33,7 +33,7 @@ export default class Header extends React.Component {
           <div className='header-content'>
             <Link to='/playlists' className='navbar-title title'><h1>rn.spt</h1></Link>
 
-            <nav className='navigation nav'>
+            <nav className='navigation'>
               {/* <Link to='/'>Home</Link> */}
               {/* <Link to='/about'>About</Link> */}
               <Link to='/playlists'>Playlists</Link>

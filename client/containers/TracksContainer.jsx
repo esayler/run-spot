@@ -15,6 +15,7 @@ const mapStateToProps = (state) => {
   return {
     // activePlaylist: state.activePlaylist,
     tracks: state.tracks,
+    tracksMetaData: state.tracksMetaData,
     sortInfo: selectors.getSortInfo(state),
   }
 }

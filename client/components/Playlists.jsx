@@ -19,20 +19,28 @@ export default class Playlists extends React.Component {
     const { playlists } = this.props
 
     if (!this.props.user) {
-      return (<h4>Please Login with Spotify to View your Playlists</h4>)
+      return (<h2 className='note'>Please Login with Spotify to View your Playlists</h2>)
     } else {
       return (
         <div>
-          <div className='content-top'>
-            <div className='button-group'>
-              <button className='button' onClick={() => this.handleClick()}>Get More Playlists</button>
-            </div>
-            <div>
-              <p>Click on a playlist name to add it's first 50 tracks to the tracklist</p>
-              <p>Click 'Get More Playlists' to add retrieve 50 more personal playlists</p>
-            </div>
-          </div>
-          <PlaylistsTable className='playlists-table' data={playlists} />
+          <button
+            className='btn button add-playlists-btn'
+            disabled={!this.props.playlistsMetaData.next}
+            onClick={() => this.handleClick()}
+          >
+            Get More Playlists
+          </button>
+          <PlaylistsTable
+            className='playlists-table'
+            data={playlists}
+          />
+          <button
+            className='btn button add-playlists-btn'
+            disabled={!this.props.playlistsMetaData.next}
+            onClick={() => this.handleClick()}
+          >
+            Get More Playlists
+          </button>
         </div>
       )
     }
