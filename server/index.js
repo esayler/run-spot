@@ -4,21 +4,24 @@ import passport from 'passport'
 import session from 'express-session'
 import { CLIENT_ID, CLIENT_SECRET } from '../secret'
 import { Strategy as SpotifyStrategy } from 'passport-spotify'
-import morgan from 'morgan'
 import cors from 'cors'
 import fetch from 'isomorphic-fetch'
 import bodyParser from 'body-parser'
-
 import webpack from 'webpack'
 import WebpackDevServer from 'webpack-dev-server'
 import webpackConfig from '../webpack.config.js'
-const { resolve } = require('path')
-
+import { resolve } from 'path'
 import util from 'util'
-
 import SpotifyWebApi from 'spotify-web-api-node'
 
+if (process.env.NODE_ENV === 'development') {
+  const morgan = require('morgan')
+  app.use(morgan('dev'))
+}
+
 console.log(chalk.yellow(`Express is spinning up`))
+const app = express()
+app.set('port', process.env.PORT || 3000)
 
 const spotifyApi = new SpotifyWebApi({
   clientId: CLIENT_ID,
@@ -69,7 +72,6 @@ const checkAuth = (req, res, next) => {
   res.redirect('/')
 }
 
-const app = express()
 app.use(cors())
 app.options('*', cors())
 app.use(bodyParser.json())
@@ -78,7 +80,7 @@ app.use(getRefreshedToken)
 app.use(session({ secret: 'keyboard cat' }))
 app.use(passport.initialize())
 app.use(passport.session())
-app.use(morgan('dev'))
+
 
 app.get('/api/me', (req, res) => {
   spotifyApi.getMe().then(
@@ -272,6 +274,8 @@ const parseJSON = response => {
   return response.json()
 }
 
-app.listen(3000, () => {
-  console.log(chalk.magenta(`Express is running, listening on port 3000`))
-})
+if (!module.parent) {
+  app.listen(app.get('port'), () => {
+    console.log(`Express running on ${app.get('port')}.`)
+  })
+}
