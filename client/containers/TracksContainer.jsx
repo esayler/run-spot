@@ -13,8 +13,9 @@ const mapStateToProps = (state) => {
   const selectors = makeSelectors('PlaylistTracks')
 
   return {
-    activePlaylist: state.playlists.activePlaylist,
+    // activePlaylist: state.activePlaylist,
     tracks: state.tracks,
+    tracksMetaData: state.tracksMetaData,
     sortInfo: selectors.getSortInfo(state),
   }
 }
@@ -27,8 +28,8 @@ const mapDispatchToProps = (dispatch) => {
     appendTracks: (ownerId, playlistId) => {
       dispatch(appendTracks(ownerId, playlistId))
     },
-    createNewPlaylist: () => {
-      dispatch(createNewPlaylist())
+    createNewPlaylist: (playlistName) => {
+      dispatch(createNewPlaylist(playlistName))
     },
     resetTracks: () => {
       dispatch(resetTracks())
