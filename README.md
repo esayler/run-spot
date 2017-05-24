@@ -29,7 +29,7 @@ yarn
 ```shell
 yarn serve
 ```
-- then navigate to [http://localhost:8000/](http://localhost:8000/)
+- then navigate to [http://localhost:3000/](http://localhost:3000/)
 
 ### to start the test runner
 ```shell
