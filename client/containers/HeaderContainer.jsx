@@ -1,5 +1,6 @@
 import { connect } from 'react-redux'
-import { setActiveUser, getActiveUser, removeActiveUser } from '../actions'
+import { bindActionCreators } from 'redux'
+import userActions from '../actions/userActions'
 import Header from '../components/header'
 
 const mapStateToProps = (state) => {
@@ -7,17 +8,7 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
-  return {
-    setActiveUser: (data) => {
-      dispatch(setActiveUser(data))
-    },
-    getActiveUser: () => {
-      dispatch(getActiveUser())
-    },
-    removeActiveUser: () => {
-      dispatch(removeActiveUser())
-    },
-  }
+  return bindActionCreators(userActions, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header)
