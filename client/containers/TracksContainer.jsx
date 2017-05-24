@@ -1,10 +1,7 @@
 import { connect } from 'react-redux'
-
-import {
-  setActivePlaylist,
-  appendTracks,
-  createNewPlaylist,
-  resetTracks } from '../actions'
+import { bindActionCreators } from 'redux'
+import trackActions from '../actions/trackActions'
+import playlistActions from '../actions/playlistActions'
 
 import Tracks from '../components/Tracks'
 import { makeSelectors } from 'sematable'
@@ -20,20 +17,11 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
-  return {
-    setActivePlaylist: (data) => {
-      dispatch(setActivePlaylist(data))
-    },
-    appendTracks: (ownerId, playlistId) => {
-      dispatch(appendTracks(ownerId, playlistId))
-    },
-    createNewPlaylist: (playlistName) => {
-      dispatch(createNewPlaylist(playlistName))
-    },
-    resetTracks: () => {
-      dispatch(resetTracks())
-    },
-  }
+  return bindActionCreators({
+    ...trackActions,
+    createNewPlaylist: playlistActions.createNewPlaylist,
+    setActivePlaylist: playlistActions.setActivePlaylist,
+  }, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Tracks)

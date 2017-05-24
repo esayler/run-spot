@@ -1,5 +1,6 @@
 import { connect } from 'react-redux'
-import { appendPlaylists } from '../actions'
+import { bindActionCreators } from 'redux'
+import playlistActions from '../actions/playlistActions'
 import Playlists from '../components/Playlists'
 
 const mapStateToProps = (state) => {
@@ -11,11 +12,7 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
-  return {
-    appendPlaylists: () => {
-      dispatch(appendPlaylists())
-    },
-  }
+  return bindActionCreators(playlistActions, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Playlists)

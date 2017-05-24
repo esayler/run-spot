@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 
-import { setActivePlaylist } from '../actions'
+import { setActivePlaylist } from '../actions/playlistActions'
 
 class PlaylistLink extends React.Component {
   constructor() {
