@@ -11,13 +11,18 @@ const rootElement = document.getElementById('root')
 ReactDOM.render(
   <HotReloader>
     <Root />
-  </HotReloader>, rootElement)
+  </HotReloader>,
+  rootElement
+)
 
 if (module.hot) {
   module.hot.accept('./components/Root', () => {
     ReactDOM.render(
       <HotReloader>
         <Root />
-      </HotReloader>, rootElement)
+      </HotReloader>,
+      rootElement
+    )
   })
 }
+

@@ -1,5 +1,3 @@
-import _ from 'lodash'
-
 const tracks = (state = [], action) => {
   switch (action.type) {
     case 'APPEND_TRACKS_PENDING':

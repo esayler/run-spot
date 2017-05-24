@@ -6,12 +6,12 @@ module.exports = {
   entry: {
     app: [
       'react-hot-loader/patch',
-      resolve(__dirname, 'client/index.jsx'),
-      'webpack-dev-server/client?http://localhost:8000',
+      'webpack-hot-middleware/client?path=http://localhost:3000/__webpack_hmr',
       'webpack/hot/only-dev-server',
-    ]
+      resolve(__dirname, 'client', 'index.jsx'),
+    ],
   },
-  devtool: 'eval-source-map',
+  devtool: 'inline-source-map',
   devServer: {
     hot: true,
     contentBase: resolve(__dirname, 'public'),
@@ -31,7 +31,6 @@ module.exports = {
     chunks: false,
   },
   externals: {
-    // 'cheerio': 'window',
     'react/addons': 'react',
     'jsdom': 'window',
     'react/lib/ExecutionEnvironment': 'react',
@@ -49,7 +48,6 @@ module.exports = {
         use: [
           { loader: 'style-loader' },
           { loader: 'css-loader' },
-          // { loader: 'sass-loader', options: { sourceMap: false } },
         ],
       },
       {
@@ -79,5 +77,6 @@ module.exports = {
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NamedModulesPlugin(),
+    new webpack.NoEmitOnErrorsPlugin(),
   ],
 }

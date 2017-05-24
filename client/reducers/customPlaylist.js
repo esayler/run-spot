@@ -3,7 +3,6 @@ import _ from 'lodash'
 const customPlaylist = (state = { tracks: [] }, action) => {
   switch (action.type) {
     case 'sematable/TABLE_INITIALIZE':
-      console.log(action.payload)
       if (action.payload.tableName === 'PlaylistTracks') {
         return Object.assign(state, {
           sortKey: action.payload.configs.sortKey,
@@ -13,9 +12,10 @@ const customPlaylist = (state = { tracks: [] }, action) => {
         return state
       }
     case 'APPEND_TRACKS_FULFILLED':
-      return Object.assign(state, { tracks: state.tracks.concat(action.payload.data) })
+      return Object.assign(state, {
+        tracks: state.tracks.concat(action.payload.data),
+      })
     case 'ADD_AUDIO_FEATURES_FULFILLED':
-      console.log('append tracks fufilled custom playlist')
       const newState = state.tracks.map(track => {
         if (track.id === action.payload.id) {
           return {
@@ -31,20 +31,35 @@ const customPlaylist = (state = { tracks: [] }, action) => {
       if (action.payload.tableName !== 'PlaylistTracks') {
         return state
       }
-      console.log('action.payload', action.payload)
       if (state.sortDirection === 'asc') {
-        const newTrackOrder = _.reverse(_.sortBy(state.tracks, [track => track.tempo]))
-        return Object.assign(state, { tracks: newTrackOrder, sortDirection: 'desc' })
+        const newTrackOrder = _.reverse(
+          _.sortBy(state.tracks, [track => track.tempo])
+        )
+        return Object.assign(state, {
+          tracks: newTrackOrder,
+          sortDirection: 'desc',
+        })
       } else {
         const newTrackOrder = _.sortBy(state.tracks, [track => track.tempo])
-        return Object.assign(state, { tracks: newTrackOrder, sortDirection: 'asc' })
+        return Object.assign(state, {
+          tracks: newTrackOrder,
+          sortDirection: 'asc',
+        })
       }
     case 'SORT_CUSTOM_TRACKS_DESC':
-      const newDescTrackOrder = _.reverse(_.sortBy(state.tracks, [track => track.tempo]))
-      return Object.assign({}, state, { tracks: newDescTrackOrder, sortDirection: 'desc' })
+      const newDescTrackOrder = _.reverse(
+        _.sortBy(state.tracks, [track => track.tempo])
+      )
+      return Object.assign({}, state, {
+        tracks: newDescTrackOrder,
+        sortDirection: 'desc',
+      })
     case 'SORT_CUSTOM_TRACKS_ASC':
       const newAscTrackOrder = _.sortBy(state.tracks, [track => track.tempo])
-      return Object.assign({}, state, { tracks: newAscTrackOrder, sortDirection: 'asc' })
+      return Object.assign({}, state, {
+        tracks: newAscTrackOrder,
+        sortDirection: 'asc',
+      })
     case 'REMOVE_CUSTOM_TRACKS':
       return {
         tracks: [],
