@@ -233,7 +233,6 @@ export const createNewPlaylist = playlistName => (dispatch, getState) => {
             status: 'success',
           })
         )
-
         Promise.mapSeries(trackArrays, trackIds => {
           fetch(`/api/add/`, {
             method: 'POST',
@@ -250,7 +249,7 @@ export const createNewPlaylist = playlistName => (dispatch, getState) => {
               dispatch(
                 notify({
                   message: 'Successfully Added Tracks to Playlist',
-                  position: 'bc',
+                  position: 'tc',
                   status: 'success',
                 })
               )
