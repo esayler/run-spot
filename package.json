@@ -100,7 +100,8 @@
     "redux-promise-middleware": "^4.2.0",
     "redux-thunk": "^2.2.0",
     "sematable": "^1.4.2",
-    "spotify-web-api-node": "^2.3.6"
+    "spotify-web-api-node": "^2.3.6",
+    "webpack-hot-middleware": "^2.18.0"
   },
   "keywords": [
     "react",

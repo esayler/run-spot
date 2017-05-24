@@ -235,7 +235,7 @@ export const createNewPlaylist = playlistName => (dispatch, getState) => {
               dispatch(
                 notify({
                   title: 'Problem Adding Tracks to Playlist!',
-                  message: '',
+                  message: `${err}`,
                   position: 'tc',
                   status: 'error',
                 })
@@ -285,7 +285,7 @@ export const getActiveUser = () => (dispatch, getState) => {
     })
     .catch(err => {
       dispatch(
-        notify({ message: 'Please Login!', position: 'tc', status: 'warning' })
+        notify({ title: 'Please Login!', message: `${err}`, position: 'tc', status: 'warning' })
       )
     })
 }

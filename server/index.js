@@ -7,20 +7,37 @@ import { Strategy as SpotifyStrategy } from 'passport-spotify'
 import cors from 'cors'
 import fetch from 'isomorphic-fetch'
 import bodyParser from 'body-parser'
-import webpack from 'webpack'
-import WebpackDevServer from 'webpack-dev-server'
-import webpackConfig from '../webpack.config.js'
 import { resolve } from 'path'
 import util from 'util'
 import SpotifyWebApi from 'spotify-web-api-node'
 
-if (process.env.NODE_ENV === 'development') {
+const environment = process.env.NODE_ENV || 'development'
+const app = express()
+
+if (environment === 'development') {
+  console.log(environment)
   const morgan = require('morgan')
   app.use(morgan('dev'))
+  const webpack = require('webpack')
+  const webpackDevMiddleware = require('webpack-dev-middleware')
+  const webpackHotMiddleware = require('webpack-hot-middleware')
+  const config = require('../webpack.config.js')
+  const compiler = webpack(config)
+
+  app.use(webpackHotMiddleware(compiler))
+
+  app.use(webpackDevMiddleware(compiler, {
+    publicPath: config.output.publicPath,
+    stats: {
+      colors: true,
+    },
+    inline: true,
+    noInfo: true,
+  }))
 }
 
-console.log(chalk.yellow(`Express is spinning up`))
-const app = express()
+app.use(express.static(resolve(__dirname, 'public')))
+
 app.set('port', process.env.PORT || 3000)
 
 const spotifyApi = new SpotifyWebApi({
@@ -87,7 +104,7 @@ app.get('/api/me', (req, res) => {
       res.send(data)
     },
     err => {
-      console.err(chalk.red('err', err))
+      console.error(chalk.red('err', err))
       res.status(err.statusCode).json(err)
     }
   )
@@ -241,24 +258,6 @@ app.post('/api/add', (req, res) => {
     })
 })
 
-const reactServer = new WebpackDevServer(webpack(webpackConfig), {
-  contentBase: '/',
-  proxy: {
-    '/api': `http://localhost:3000`,
-  },
-  stats: {
-    colors: true,
-  },
-  hot: true,
-  historyApiFallback: true,
-})
-
-reactServer.use('/', express.static(resolve(__dirname, '../public')))
-
-reactServer.listen(8000, () =>
-  console.log(chalk.magenta(`React is listening on port 8000`))
-)
-
 const checkStatus = response => {
   if (response.status >= 200 && response.status < 300) {
     return response
@@ -269,9 +268,14 @@ const checkStatus = response => {
   }
 }
 
+
 const parseJSON = response => {
   return response.json()
 }
+
+app.get('*', function (request, response) {
+  response.sendFile(resolve(__dirname, '..', 'public', 'index.html'))
+})
 
 if (!module.parent) {
   app.listen(app.get('port'), () => {
