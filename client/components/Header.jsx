@@ -43,7 +43,6 @@ export default class Header extends React.Component {
             <Link to='/playlists' className='navbar-title title'>
               <h1>rn.spt</h1>
             </Link>
-
             <nav className='navigation'>
               <Link to='/playlists'>Playlists</Link>
               <Link to='/tracks'>Tracks</Link>

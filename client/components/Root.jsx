@@ -10,7 +10,6 @@ import ReduxThunk from 'redux-thunk'
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 import promiseMiddleware from 'redux-promise-middleware'
 import { loadingBarMiddleware } from 'react-redux-loading-bar'
-import theme from 'reapop-theme-bootstrap'
 import NotificationsSystem from './NotificationsSystem'
 
 const store = createStore(

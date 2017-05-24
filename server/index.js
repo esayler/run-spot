@@ -10,6 +10,7 @@ import bodyParser from 'body-parser'
 import { resolve } from 'path'
 import util from 'util'
 import SpotifyWebApi from 'spotify-web-api-node'
+import { checkStatus, parseJSON } from '../utils/fetchUtils'
 
 const environment = process.env.NODE_ENV || 'development'
 const app = express()
@@ -61,7 +62,7 @@ passport.use(
         spotifyApi.setAccessToken(accessToken)
         spotifyApi.setRefreshToken(refreshToken)
         // user profile is returned to represent logged-in user
-        // TODO: return user record associated with user profile from DB instead.
+        // TODO: return user record associated with user profile from DB instead
         return done(null, profile)
       })
     }
@@ -135,8 +136,9 @@ app.get('/api/tracks/:userId/:playlistId/:offset/:limit', (req, res) => {
 })
 
 app.get('/api/get_playlists', (req, res) => {
+  const { offset, limit } = req.query
   fetch(
-    `https://api.spotify.com/v1/me/playlists?offset=${req.query.offset}&limit=${req.query.limit}`,
+    `https://api.spotify.com/v1/me/playlists?offset=${offset}&limit=${limit}`,
     {
       method: 'GET',
       headers: {
@@ -191,7 +193,8 @@ app.use(
     ],
     showDialog: true,
   }),
-  () => {} // will be redirected to spotify for authen, so this function won't be called
+  () => {} // will be redirected to spotify for authen,
+           // so this function won't be called
 )
 
 app.get(
@@ -249,29 +252,14 @@ app.post('/api/add', (req, res) => {
   })
     .then(checkStatus)
     .then(parseJSON)
-    .then(response => {
-      res.json(response)
+    .then(payload => {
+      res.json(payload)
     })
     .catch(err => {
       chalk.red('error in POST /api/add', util.inspect(err))
       res.status(err.response.status).json(err.response)
     })
 })
-
-const checkStatus = response => {
-  if (response.status >= 200 && response.status < 300) {
-    return response
-  } else {
-    var error = new Error(response.statusText)
-    error.response = response
-    throw error
-  }
-}
-
-
-const parseJSON = response => {
-  return response.json()
-}
 
 app.get('*', function (request, response) {
   response.sendFile(resolve(__dirname, '..', 'public', 'index.html'))

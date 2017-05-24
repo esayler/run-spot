@@ -2,21 +2,19 @@ import axios from 'axios'
 import { addNotification as notify } from 'reapop'
 import fetch from 'isomorphic-fetch'
 var Promise = require('bluebird')
+const uuidV4 = require('uuid/v4')
 
 export const appendPlaylists = () => (dispatch, getState) => {
-  let { playlistsMetaData } = getState()
+  let { user, playlistsMetaData: meta } = getState()
 
-  const dispatchLimit = 50
-  const dispatchOffset = playlistsMetaData.offset + playlistsMetaData.limit
+  const limit = 50
+  const offset = meta.offset + meta.limit
 
-  if (
-    playlistsMetaData.next &&
-    playlistsMetaData.offset + playlistsMetaData.limit < playlistsMetaData.total
-  ) {
+  if (user && meta.next && meta.offset + meta.limit < meta.total) {
     dispatch({
       type: 'APPEND_PLAYLISTS',
       payload: fetch(
-        `/api/get_playlists?offset=${dispatchOffset}&limit=${dispatchLimit}`
+        `/api/get_playlists?offset=${offset}&limit=${limit}`
       )
         .then(res => res.json())
         .then(payload => {
@@ -44,7 +42,7 @@ export const appendPlaylists = () => (dispatch, getState) => {
           return Object.assign({}, { meta }, { data })
         }),
     })
-  } else {
+  } else if (user) {
     dispatch(
       notify({
         message: 'No More Playlists to Add!',
@@ -56,23 +54,19 @@ export const appendPlaylists = () => (dispatch, getState) => {
 }
 
 export const appendTracks = (ownerId, playlistId) => (dispatch, getState) => {
-  const { tracksMetaData } = getState()
-  let dispatchLimit = 50
-  let dispatchOffset = tracksMetaData
-    ? tracksMetaData.offset + dispatchLimit
-    : 0
+  const { user, tracksMetaData: meta } = getState()
+  let limit = 50
+  let offset = meta ? meta.offset + limit : 0
 
-  if (
-    !tracksMetaData ||
-    tracksMetaData.offset + tracksMetaData.limit < tracksMetaData.total
-  ) {
+  if (user && !meta || meta.offset + meta.limit < meta.total) {
     return dispatch({
       type: 'APPEND_TRACKS',
       payload: axios
         .get(
-          `/api/tracks/${ownerId}/${playlistId}/${dispatchOffset}/${dispatchLimit}`
+          `/api/tracks/${ownerId}/${playlistId}/${offset}/${limit}`
         )
         .then(res => {
+          console.log(res.data)
           const meta = {
             next: res.data.next,
             offset: res.data.offset,
@@ -92,6 +86,7 @@ export const appendTracks = (ownerId, playlistId) => (dispatch, getState) => {
               {
                 ...activePlaylist,
                 id: track.id,
+                uuid: uuidV4(),
                 album: track.album.name,
                 artist: track.artists[0].name,
                 name: track.name,
@@ -116,7 +111,7 @@ export const appendTracks = (ownerId, playlistId) => (dispatch, getState) => {
           dispatch(sortCustomTracksDesc())
         }
       })
-  } else {
+  } else if (user) {
     if (!ownerId || !playlistId) {
       dispatch(
         notify({
@@ -210,7 +205,12 @@ export const createNewPlaylist = playlistName => (dispatch, getState) => {
             allowHTML: true,
             closeButton: true,
             dismissAfter: 10000,
-            message: `Succesfully Created New Playlist: <a href="${res.data.external_urls.spotify}" target="_blank">${res.data.name}</a>`,
+            message: `Succesfully Created New Playlist: 
+                        <a href="${res.data.external_urls.spotify}"
+                          target="_blank"
+                        >
+                          ${res.data.name}
+                        </a>`,
             position: 'tc',
             status: res.status,
           })

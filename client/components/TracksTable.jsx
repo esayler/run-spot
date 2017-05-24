@@ -1,11 +1,10 @@
 import React, { Component, PropTypes } from 'react'
 import sematable, { Table } from 'sematable'
-import TracksTableActions from './PlaylistsTableActions'
 
 const columns = [
   {
-    key: 'id',
-    header: 'id',
+    key: 'uuid',
+    header: 'uuid',
     sortable: false,
     searchable: false,
     filterable: false,
