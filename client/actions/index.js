@@ -41,6 +41,16 @@ export const appendPlaylists = () => (dispatch, getState) => {
           return Object.assign({}, { meta }, { data })
         }),
     })
+    .catch(err => {
+      dispatch(
+        notify({
+          title: 'Error getting playlists',
+          message: err,
+          position: 'tc',
+          status: 'error',
+        })
+      )
+    })
   } else if (user) {
     dispatch(
       notify({
