@@ -1,5 +1,5 @@
-import axios from 'axios'
 import { addNotification as notify } from 'reapop'
+import { checkStatus, parseJSON } from '../../utils/fetchUtils'
 import fetch from 'isomorphic-fetch'
 var Promise = require('bluebird')
 const uuidV4 = require('uuid/v4')
@@ -13,10 +13,9 @@ export const appendPlaylists = () => (dispatch, getState) => {
   if (user && meta.next && meta.offset + meta.limit < meta.total) {
     dispatch({
       type: 'APPEND_PLAYLISTS',
-      payload: fetch(
-        `/api/get_playlists?offset=${offset}&limit=${limit}`
-      )
-        .then(res => res.json())
+      payload: fetch(`/api/get_playlists?offset=${offset}&limit=${limit}`)
+        .then(checkStatus)
+        .then(parseJSON)
         .then(payload => {
           const meta = {
             next: payload.next,
@@ -47,7 +46,7 @@ export const appendPlaylists = () => (dispatch, getState) => {
       notify({
         message: 'No More Playlists to Add!',
         position: 'tc',
-        status: 'error',
+        status: 'warning',
       })
     )
   }
@@ -58,20 +57,18 @@ export const appendTracks = (ownerId, playlistId) => (dispatch, getState) => {
   let limit = 50
   let offset = meta ? meta.offset + limit : 0
 
-  if (user && !meta || meta.offset + meta.limit < meta.total) {
+  if ((user && !meta) || meta.offset + meta.limit < meta.total) {
     return dispatch({
       type: 'APPEND_TRACKS',
-      payload: axios
-        .get(
-          `/api/tracks/${ownerId}/${playlistId}/${offset}/${limit}`
-        )
-        .then(res => {
-          console.log(res.data)
+      payload: fetch(`/api/tracks/${ownerId}/${playlistId}/${offset}/${limit}`)
+        .then(checkStatus)
+        .then(parseJSON)
+        .then(payload => {
           const meta = {
-            next: res.data.next,
-            offset: res.data.offset,
-            limit: res.data.limit,
-            total: res.data.total,
+            next: payload.next,
+            offset: payload.offset,
+            limit: payload.limit,
+            total: payload.total,
           }
           dispatch({
             type: 'SET_TRACKS_META_DATA',
@@ -80,7 +77,7 @@ export const appendTracks = (ownerId, playlistId) => (dispatch, getState) => {
 
           const { activePlaylist } = getState()
 
-          const data = res.data.items.map(({ track }) =>
+          const data = payload.items.map(({ track }) =>
             Object.assign(
               {},
               {
@@ -111,6 +108,16 @@ export const appendTracks = (ownerId, playlistId) => (dispatch, getState) => {
           dispatch(sortCustomTracksDesc())
         }
       })
+      .catch(err => {
+        dispatch(
+          notify({
+            title: 'Error getting tracks!',
+            message: err,
+            position: 'tc',
+            status: 'error',
+          })
+        )
+      })
   } else if (user) {
     if (!ownerId || !playlistId) {
       dispatch(
@@ -135,10 +142,11 @@ export const appendTracks = (ownerId, playlistId) => (dispatch, getState) => {
 export const getAudioFeaturesForTrack = trackId => (dispatch, getState) => {
   return dispatch({
     type: 'ADD_AUDIO_FEATURES',
-    payload: axios
-      .get(`/api/audiofeatures/${trackId}`)
-      .then(res => {
-        return res.data
+    payload: fetch(`/api/audiofeatures/${trackId}`)
+      .then(checkStatus)
+      .then(parseJSON)
+      .then(payload => {
+        return payload
       })
       .catch(error =>
         dispatch(
@@ -197,31 +205,47 @@ export const createNewPlaylist = playlistName => (dispatch, getState) => {
 
   dispatch({
     type: 'CREATE_NEW_PLAYLIST',
-    payload: axios
-      .post(`/api/new/`, { name })
-      .then(res => {
+    payload: fetch(`/api/playlists`, {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        name,
+      }),
+    })
+      .then(checkStatus)
+      .then(parseJSON)
+      .then(payload => {
         dispatch(
           notify({
             allowHTML: true,
             closeButton: true,
             dismissAfter: 10000,
             message: `Succesfully Created New Playlist: 
-                        <a href="${res.data.external_urls.spotify}"
-                          target="_blank"
-                        >
-                          ${res.data.name}
-                        </a>`,
+                          <a href="${payload.external_urls.spotify}"
+                            target="_blank"
+                          >
+                            ${payload.name}
+                          </a>`,
             position: 'tc',
-            status: res.status,
+            status: 'success',
           })
         )
 
         Promise.mapSeries(trackArrays, trackIds => {
-          axios
-            .post(`/api/add/`, {
-              href: res.data.href,
+          fetch(`/api/add/`, {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              href: payload.href,
               uris: trackIds,
-            })
+            }),
+          })
             .then(res => {
               dispatch(
                 notify({
@@ -269,25 +293,34 @@ export const sortCustomTracksAsc = () => (dispatch, getState) => {
 }
 
 export const getActiveUser = () => (dispatch, getState) => {
-  dispatch({
+  return dispatch({
     type: 'GET_ACTIVE_USER',
-    payload: axios.get('/api/me/'),
+    payload: fetch('/api/me/')
+      .then(checkStatus)
+      .then(parseJSON)
+      .then(payload => {
+        return Promise.all([
+          dispatch(setActiveUser(payload.body)),
+          dispatch(
+            notify({
+              message: 'Succesfully Logged in',
+              position: 'tc',
+              status: 'success',
+            })
+          ),
+        ])
+      })
+      .catch(err => {
+        dispatch(
+          notify({
+            title: 'Please Login!',
+            message: `${err}`,
+            position: 'tc',
+            status: 'warning',
+          })
+        )
+      }),
   })
-    .then(res => {
-      dispatch(
-        notify({
-          message: 'Succesfully Logged in',
-          position: 'tc',
-          status: 'success',
-        })
-      )
-      dispatch(setActiveUser(res.value.data.body))
-    })
-    .catch(err => {
-      dispatch(
-        notify({ title: 'Please Login!', message: `${err}`, position: 'tc', status: 'warning' })
-      )
-    })
 }
 
 export const removeActiveUser = () => (dispatch, getState) => {

@@ -16,7 +16,6 @@ const environment = process.env.NODE_ENV || 'development'
 const app = express()
 
 if (environment === 'development') {
-  console.log(environment)
   const morgan = require('morgan')
   app.use(morgan('dev'))
   const webpack = require('webpack')
@@ -94,7 +93,7 @@ app.use(cors())
 app.options('*', cors())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
-app.use(getRefreshedToken)
+// app.use(getRefreshedToken)
 app.use(session({ secret: 'keyboard cat' }))
 app.use(passport.initialize())
 app.use(passport.session())
@@ -102,6 +101,7 @@ app.use(passport.session())
 app.get('/api/me', (req, res) => {
   spotifyApi.getMe().then(
     data => {
+      // data is an object with body, headers, and statusCode
       res.send(data)
     },
     err => {
@@ -122,7 +122,7 @@ app.get('/api/tracks/:userId/:playlistId/:offset/:limit', (req, res) => {
       limit: `${req.params.limit}`,
     })
     .then(
-      data => res.json(data.body),
+      data => res.status(200).json(data.body),
       err => {
         console.error(
           chalk.red(
@@ -130,7 +130,7 @@ app.get('/api/tracks/:userId/:playlistId/:offset/:limit', (req, res) => {
             util.inspect(err)
           )
         )
-        res.json(err)
+        res.status(500).json(err)
       }
     )
 })
@@ -150,7 +150,7 @@ app.get('/api/get_playlists', (req, res) => {
     .then(checkStatus)
     .then(parseJSON)
     .then(response => {
-      res.json(response)
+      res.status(200).json(response)
     })
     .catch(err => {
       console.error(
@@ -212,7 +212,7 @@ app.get('/api/logout', (req, res) => {
   res.redirect(`/playlists`)
 })
 
-app.post('/api/new', (req, res) => {
+app.post('/api/playlists', (req, res) => {
   const name = req.body.name
   fetch(`https://api.spotify.com/v1/users/${req.user.id}/playlists`, {
     method: 'POST',
@@ -229,7 +229,7 @@ app.post('/api/new', (req, res) => {
     .then(checkStatus)
     .then(parseJSON)
     .then(response => {
-      res.json(response)
+      res.status(200).json(response)
     })
     .catch(err => {
       chalk.red('error in POST /api/new', util.inspect(err))
@@ -253,7 +253,7 @@ app.post('/api/add', (req, res) => {
     .then(checkStatus)
     .then(parseJSON)
     .then(payload => {
-      res.json(payload)
+      res.status(200).json(payload)
     })
     .catch(err => {
       chalk.red('error in POST /api/add', util.inspect(err))
