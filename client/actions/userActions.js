@@ -1,6 +1,6 @@
 import { addNotification as notify } from 'reapop'
 import { checkStatus, parseJSON } from '../../utils/fetchUtils'
-import fetch from 'isomorphic-fetch'
+import 'isomorphic-fetch'
 const Promise = require('bluebird')
 
 const setActiveUser = data => {
