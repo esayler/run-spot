@@ -1,6 +1,6 @@
 import { addNotification as notify } from 'reapop'
 import { checkStatus, parseJSON } from '../../utils/fetchUtils'
-import fetch from 'isomorphic-fetch'
+import 'isomorphic-fetch'
 const Promise = require('bluebird')
 
 const appendPlaylists = () => (dispatch, getState) => {
@@ -8,9 +8,10 @@ const appendPlaylists = () => (dispatch, getState) => {
 
   const limit = 50
   const offset = meta.offset + meta.limit
+  // const offset = meta ? meta.offset + limit : 0
 
   if (meta.next && meta.offset + meta.limit < meta.total) {
-    dispatch({
+    return dispatch({
       type: 'APPEND_PLAYLISTS',
       payload: fetch(`/api/get_playlists?offset=${offset}&limit=${limit}`)
         .then(checkStatus)
@@ -51,7 +52,7 @@ const appendPlaylists = () => (dispatch, getState) => {
       )
     })
   } else if (user) {
-    dispatch(
+    return dispatch(
       notify({
         message: 'No More Playlists to Add!',
         position: 'tc',
