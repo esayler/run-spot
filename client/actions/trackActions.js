@@ -144,4 +144,7 @@ const getAudioFeaturesForTrack = trackId => (dispatch, getState) => {
 export default {
   appendTracks,
   resetTracks,
+  sortCustomTracksDesc,
+  sortCustomTracksAsc,
+  getAudioFeaturesForTrack,
 }

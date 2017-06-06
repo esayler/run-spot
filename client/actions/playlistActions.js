@@ -40,12 +40,11 @@ const appendPlaylists = () => (dispatch, getState) => {
           )
           return Object.assign({}, { meta }, { data })
         }),
-    })
-    .catch(err => {
+    }).catch(err => {
       dispatch(
         notify({
           title: 'Error getting playlists',
-          message: err,
+          // message: err,
           position: 'tc',
           status: 'error',
         })
@@ -79,7 +78,7 @@ const createNewPlaylist = playlistName => (dispatch, getState) => {
   // (to the top of the playlist) (preserves order)
   trackArrays.reverse()
 
-  dispatch({
+  return dispatch({
     type: 'CREATE_NEW_PLAYLIST',
     payload: fetch(`/api/playlists`, {
       method: 'POST',
@@ -110,7 +109,7 @@ const createNewPlaylist = playlistName => (dispatch, getState) => {
           })
         )
         Promise.mapSeries(trackArrays, trackIds => {
-          fetch(`/api/add/`, {
+          fetch(`/api/add`, {
             method: 'POST',
             credentials: 'include',
             headers: {
@@ -121,6 +120,8 @@ const createNewPlaylist = playlistName => (dispatch, getState) => {
               uris: trackIds,
             }),
           })
+            .then(checkStatus)
+            .then(parseJSON)
             .then(res => {
               dispatch(
                 notify({
@@ -134,7 +135,6 @@ const createNewPlaylist = playlistName => (dispatch, getState) => {
               dispatch(
                 notify({
                   title: 'Problem Adding Tracks to Playlist!',
-                  message: `${err}`,
                   position: 'tc',
                   status: 'error',
                 })
@@ -146,7 +146,6 @@ const createNewPlaylist = playlistName => (dispatch, getState) => {
         dispatch(
           notify({
             title: 'Problem Creating Playlist',
-            message: err,
             position: 'tc',
             status: 'error',
           })
@@ -159,17 +158,17 @@ const setActivePlaylist = (playlistName, playlistId, userId, total) => (
   dispatch,
   getState
 ) => {
-  return dispatch({
+  dispatch({
     type: 'SET_TRACKS_META_DATA',
     data: null,
-  }).then(() => {
-    dispatch({
-      type: 'SET_ACTIVE_PLAYLIST',
-      playlistName,
-      playlistId,
-      userId,
-      total,
-    })
+  })
+
+  return dispatch({
+    type: 'SET_ACTIVE_PLAYLIST',
+    playlistName,
+    playlistId,
+    userId,
+    total,
   })
 }
 

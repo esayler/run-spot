@@ -10,5 +10,7 @@ export const checkStatus = response => {
 }
 
 export const parseJSON = response => {
-  return response.json()
+  let decoded = response.json()
+  // console.log('decoded: ', decoded)
+  return decoded
 }

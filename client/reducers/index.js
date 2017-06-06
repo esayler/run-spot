@@ -18,7 +18,6 @@ const rootReducer = combineReducers({
   tracks,
   sematable,
   user,
-  audioFeatures,
   customPlaylist,
   playlistsMetaData,
   tracksMetaData,
