@@ -71,7 +71,7 @@ if (environment === 'development') {
   }));
 }
 
-app.use(_express2.default.static((0, _path.resolve)(__dirname, 'public')));
+app.use(_express2.default.static((0, _path.resolve)(__dirname, '../public')));
 
 app.set('port', process.env.PORT || 3000);
 

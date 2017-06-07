@@ -37,7 +37,7 @@ if (environment === 'development') {
   }))
 }
 
-app.use(express.static(resolve(__dirname, 'public')))
+app.use(express.static(resolve(__dirname, '../public')))
 
 app.set('port', process.env.PORT || 3000)
 
