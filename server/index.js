@@ -12,7 +12,6 @@ import util from 'util'
 import SpotifyWebApi from 'spotify-web-api-node'
 import { checkStatus, parseJSON } from '../utils/fetchUtils'
 
-
 const environment = process.env.NODE_ENV || 'development'
 const app = express()
 
@@ -44,7 +43,7 @@ app.set('port', process.env.PORT || 3000)
 const spotifyApi = new SpotifyWebApi({
   clientId: process.env.CLIENT_ID,
   clientSecret: process.env.CLIENT_SECRET,
-  redirectUri: 'http://localhost:3000/api/callback',
+  redirectUri: '/api/callback',
 })
 
 passport.serializeUser((user, done) => done(null, user))
@@ -55,7 +54,7 @@ passport.use(
     {
       clientID: process.env.CLIENT_ID,
       clientSecret: process.env.CLIENT_SECRET,
-      callbackURL: 'http://localhost:3000/api/callback',
+      callbackURL: '/api/callback',
     },
     (accessToken, refreshToken, profile, done) => {
       process.nextTick(_ => {
