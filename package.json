@@ -9,7 +9,7 @@
     "build": "webpack --progress && babel server -d dist",
     "watch": "webpack --progress --watch",
     "lint": "eslint .",
-    "test": "jest --watch"
+    "test": "jest"
   },
   "repository": "git@github.com:esayler/react-boilerplate.git",
   "author": "Eric Sayler <easayler@gmail.com>",
