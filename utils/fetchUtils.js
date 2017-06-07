@@ -1,4 +1,4 @@
-export const checkStatus = response => {
+const checkStatus = response => {
   // console.log('checking status...', response)
   if (response.status >= 200 && response.status < 300) {
     return response
@@ -9,8 +9,13 @@ export const checkStatus = response => {
   }
 }
 
-export const parseJSON = response => {
+const parseJSON = response => {
   let decoded = response.json()
   // console.log('decoded: ', decoded)
   return decoded
+}
+
+module.exports = {
+  parseJSON,
+  checkStatus,
 }
