@@ -36,6 +36,9 @@ jspm_packages
 # Optional REPL history
 .node_repl_history
 
-secret.js
-
 client/fonts
+
+public/*.woff
+public/*.woff2
+
+.env

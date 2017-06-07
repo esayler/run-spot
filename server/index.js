@@ -1,8 +1,8 @@
+require('dotenv').config()
 import express from 'express'
 import chalk from 'chalk'
 import passport from 'passport'
 import session from 'express-session'
-import { CLIENT_ID, CLIENT_SECRET } from '../secret'
 import { Strategy as SpotifyStrategy } from 'passport-spotify'
 import cors from 'cors'
 import fetch from 'isomorphic-fetch'
@@ -11,6 +11,7 @@ import { resolve } from 'path'
 import util from 'util'
 import SpotifyWebApi from 'spotify-web-api-node'
 import { checkStatus, parseJSON } from '../utils/fetchUtils'
+
 
 const environment = process.env.NODE_ENV || 'development'
 const app = express()
@@ -41,8 +42,8 @@ app.use(express.static(resolve(__dirname, 'public')))
 app.set('port', process.env.PORT || 3000)
 
 const spotifyApi = new SpotifyWebApi({
-  clientId: CLIENT_ID,
-  clientSecret: CLIENT_SECRET,
+  clientId: process.env.CLIENT_ID,
+  clientSecret: process.env.CLIENT_SECRET,
   redirectUri: 'http://localhost:3000/api/callback',
 })
 
@@ -52,8 +53,8 @@ passport.deserializeUser((obj, done) => done(null, obj))
 passport.use(
   new SpotifyStrategy(
     {
-      clientID: CLIENT_ID,
-      clientSecret: CLIENT_SECRET,
+      clientID: process.env.CLIENT_ID,
+      clientSecret: process.env.CLIENT_SECRET,
       callbackURL: 'http://localhost:3000/api/callback',
     },
     (accessToken, refreshToken, profile, done) => {
