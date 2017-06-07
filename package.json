@@ -10,7 +10,6 @@
     "watch": "webpack --progress --watch",
     "lint": "eslint .",
     "test": "jest"
-    // "heroku-postbuild": "webpack --optimize-minimize --define process.env.NODE_ENV='production' && babel server -d dist"
   },
   "repository": "git@github.com:esayler/react-boilerplate.git",
   "author": "Eric Sayler <easayler@gmail.com>",
