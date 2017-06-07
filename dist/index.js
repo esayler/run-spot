@@ -16,8 +16,6 @@ var _expressSession = require('express-session');
 
 var _expressSession2 = _interopRequireDefault(_expressSession);
 
-var _secret = require('../secret');
-
 var _passportSpotify = require('passport-spotify');
 
 var _cors = require('cors');
@@ -45,6 +43,9 @@ var _spotifyWebApiNode2 = _interopRequireDefault(_spotifyWebApiNode);
 var _fetchUtils = require('../utils/fetchUtils');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+require('dotenv').config();
+
 
 var environment = process.env.NODE_ENV || 'development';
 var app = (0, _express2.default)();
@@ -75,8 +76,8 @@ app.use(_express2.default.static((0, _path.resolve)(__dirname, 'public')));
 app.set('port', process.env.PORT || 3000);
 
 var spotifyApi = new _spotifyWebApiNode2.default({
-  clientId: _secret.CLIENT_ID,
-  clientSecret: _secret.CLIENT_SECRET,
+  clientId: process.env.CLIENT_ID,
+  clientSecret: process.env.CLIENT_SECRET,
   redirectUri: 'http://localhost:3000/api/callback'
 });
 
@@ -88,8 +89,8 @@ _passport2.default.deserializeUser(function (obj, done) {
 });
 
 _passport2.default.use(new _passportSpotify.Strategy({
-  clientID: _secret.CLIENT_ID,
-  clientSecret: _secret.CLIENT_SECRET,
+  clientID: process.env.CLIENT_ID,
+  clientSecret: process.env.CLIENT_SECRET,
   callbackURL: 'http://localhost:3000/api/callback'
 }, function (accessToken, refreshToken, profile, done) {
   process.nextTick(function (_) {
