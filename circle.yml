@@ -3,3 +3,13 @@ machine:
     America/Denver
   node:
     version: 7.10.0
+
+deployment:
+  staging:
+    branch: staging
+    heroku:
+      appname: run-spot-staging 
+  production:
+    branch: master
+    heroku:
+      appname: run-spot
