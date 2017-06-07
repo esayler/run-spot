@@ -50,6 +50,8 @@ require('dotenv').config();
 var environment = process.env.NODE_ENV || 'development';
 var app = (0, _express2.default)();
 
+var redirectURI = 'https://run-spot.herokuapp.com/api/callback';
+
 if (environment === 'development') {
   var morgan = require('morgan');
   app.use(morgan('dev'));
@@ -78,7 +80,7 @@ app.set('port', process.env.PORT || 3000);
 var spotifyApi = new _spotifyWebApiNode2.default({
   clientId: process.env.CLIENT_ID,
   clientSecret: process.env.CLIENT_SECRET,
-  redirectUri: '/api/callback'
+  redirectUri: redirectURI
 });
 
 _passport2.default.serializeUser(function (user, done) {
@@ -91,7 +93,7 @@ _passport2.default.deserializeUser(function (obj, done) {
 _passport2.default.use(new _passportSpotify.Strategy({
   clientID: process.env.CLIENT_ID,
   clientSecret: process.env.CLIENT_SECRET,
-  callbackURL: '/api/callback'
+  callbackURL: redirectURI
 }, function (accessToken, refreshToken, profile, done) {
   process.nextTick(function (_) {
     spotifyApi.setAccessToken(accessToken);

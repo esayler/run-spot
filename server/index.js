@@ -15,6 +15,8 @@ import { checkStatus, parseJSON } from '../utils/fetchUtils'
 const environment = process.env.NODE_ENV || 'development'
 const app = express()
 
+const redirectURI = 'https://run-spot.herokuapp.com/api/callback'
+
 if (environment === 'development') {
   const morgan = require('morgan')
   app.use(morgan('dev'))
@@ -36,6 +38,8 @@ if (environment === 'development') {
   }))
 }
 
+
+
 app.use(express.static(resolve(__dirname, '../public')))
 
 app.set('port', process.env.PORT || 3000)
@@ -43,7 +47,7 @@ app.set('port', process.env.PORT || 3000)
 const spotifyApi = new SpotifyWebApi({
   clientId: process.env.CLIENT_ID,
   clientSecret: process.env.CLIENT_SECRET,
-  redirectUri: '/api/callback',
+  redirectUri: redirectURI,
 })
 
 passport.serializeUser((user, done) => done(null, user))
@@ -54,7 +58,7 @@ passport.use(
     {
       clientID: process.env.CLIENT_ID,
       clientSecret: process.env.CLIENT_SECRET,
-      callbackURL: '/api/callback',
+      callbackURL: redirectURI,
     },
     (accessToken, refreshToken, profile, done) => {
       process.nextTick(_ => {
