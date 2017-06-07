@@ -92,15 +92,6 @@
   },
   "keywords": [
     "react",
-    "karma",
-    "mocha",
-    "chai",
-    "sass",
-    "standard",
-    "eslint",
-    "webpack-2",
-    "boilerplate",
-    "react-router-4",
-    "hot-module-replacement"
+    "spotify"
   ]
 }
