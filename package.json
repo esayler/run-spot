@@ -92,7 +92,7 @@
     "react-dom": "^15.4.2",
     "react-redux": "^5.0.2",
     "react-redux-loading-bar": "^2.7.0",
-    "react-router": "next",
+    "react-router": "^4.1.1",
     "react-router-dom": "^4.1.1",
     "react-select": "^1.0.0-rc.3",
     "reapop": "^1.0.0",
