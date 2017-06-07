@@ -78,7 +78,7 @@ app.set('port', process.env.PORT || 3000);
 var spotifyApi = new _spotifyWebApiNode2.default({
   clientId: process.env.CLIENT_ID,
   clientSecret: process.env.CLIENT_SECRET,
-  redirectUri: 'http://localhost:3000/api/callback'
+  redirectUri: '/api/callback'
 });
 
 _passport2.default.serializeUser(function (user, done) {
@@ -91,7 +91,7 @@ _passport2.default.deserializeUser(function (obj, done) {
 _passport2.default.use(new _passportSpotify.Strategy({
   clientID: process.env.CLIENT_ID,
   clientSecret: process.env.CLIENT_SECRET,
-  callbackURL: 'http://localhost:3000/api/callback'
+  callbackURL: '/api/callback'
 }, function (accessToken, refreshToken, profile, done) {
   process.nextTick(function (_) {
     spotifyApi.setAccessToken(accessToken);
