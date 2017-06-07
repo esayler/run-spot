@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server/index.js",
     "serve": "nodemon server/index.js --exec babel-node --presets latest --ignore client/",
-    "build": "webpack --progress",
+    "build": "webpack --progress && babel server -d dist",
     "watch": "webpack --progress --watch",
     "lint": "eslint .",
     "test": "jest --watch"
@@ -15,7 +15,7 @@
   "author": "Eric Sayler <easayler@gmail.com>",
   "license": "MIT",
   "devDependencies": {
-    "babel-cli": "^6.22.2",
+    "babel-cli": "^6.24.1",
     "babel-core": "^6.22.1",
     "babel-loader": "^6.2.10",
     "babel-plugin-lodash": "^3.2.11",
