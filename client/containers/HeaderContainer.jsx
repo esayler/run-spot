@@ -1,7 +1,7 @@
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import userActions from '../actions/userActions'
-import Header from '../components/header'
+import Header from '../components/Header'
 
 const mapStateToProps = (state) => {
   return { activeUser: state.user }
