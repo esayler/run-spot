@@ -11,7 +11,7 @@
     "lint": "eslint .",
     "test": "jest"
   },
-  "repository": "git@github.com:esayler/react-boilerplate.git",
+  "repository": "git@github.com:esayler/run-spot.git",
   "author": "Eric Sayler <easayler@gmail.com>",
   "license": "MIT",
   "devDependencies": {
