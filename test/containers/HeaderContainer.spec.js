@@ -3,8 +3,7 @@ import React from 'react'
 import { mount } from 'enzyme'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
-import { StaticRouter } from 'react-router-dom'
-import Header from '../../client/components/Header'
+import { MemoryRouter } from 'react-router'
 import HeaderContainer from '../../client/containers/HeaderContainer'
 import thunk from 'redux-thunk'
 
@@ -17,7 +16,6 @@ const mockUser = {
 }
 
 const mockStore = configureMockStore([thunk])
-
 const store = mockStore({
   user: mockUser,
 })
@@ -27,16 +25,13 @@ const context = {}
 const setup = () => {
   let Container = mount(
     <Provider store={store}>
-      <StaticRouter location={'/'} context={context}>
+      <MemoryRouter location={'/'} context={context}>
         <HeaderContainer />
-      </StaticRouter>
+      </MemoryRouter>
     </Provider>
   )
 
-  let RouterComponent = Container.find(StaticRouter)
-  let Component = RouterComponent.find(Header)
-
-  console.log(Component.debug())
+  let Component = Container.find('Header')
 
   return {
     Container,
@@ -45,12 +40,12 @@ const setup = () => {
 }
 
 describe('HeaderContainer', () => {
-  it('should pass `user` state down to Header as `activeUser`', () => {
+  it('should pass `user` state down to <Header /> as `activeUser`', () => {
     const { Component } = setup()
     expect(Component.props().activeUser).toEqual(mockUser)
   })
 
-  it('should pass `userActions` action creators to Header', () => {
+  it('should pass `userActions` action creators to <Header />', () => {
     const { Component } = setup()
     expect(Object.keys(Component.props())).toContain(
       'setActiveUser',
