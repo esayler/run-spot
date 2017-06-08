@@ -1,4 +1,3 @@
-
 var css = require('./styles/styles.scss');
 
 // media breakpoint - small screen min width
